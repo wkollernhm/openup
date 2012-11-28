@@ -22,8 +22,8 @@ class JSONCommonNamesController extends Controller {
             // check if we have a valid queries array
             if( is_array($queries) ) {
                 // handle each sub-query separately
-                foreach( $queries as $query ) {
-                    $return[] = $this->handleQuery($query);
+                foreach( $queries as $index => $query ) {
+                    $return[$index] = $this->handleQuery($query);
                 }
             }
             else {
@@ -47,7 +47,7 @@ class JSONCommonNamesController extends Controller {
         $query = json_decode($query, true);
 
         // check for valid query
-        if( $query == null ) {
+        if( $query == null || $query['type'] != '/name/common' ) {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
         }
