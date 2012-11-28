@@ -14,7 +14,14 @@ class JSONCommonNamesController extends Controller {
         }
         // check for single query mode
         else if( $query != null ) {
+            // decode json query
+            $query = json_decode($query, true);
             
+            // check for valid query
+            if( $query == null ) {
+                header('HTTP/1.0 400 Bad Request', true, 400);
+                exit();
+            }
         }
         
         return $return;
