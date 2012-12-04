@@ -20,27 +20,28 @@ class PESI extends CachedSoapClient {
         
         // Fetch records matching our query
         $records = $this->getPESIRecords( $term, false );
-        
-        // Check all records and analyze the data
-        foreach( $records as $record ) {
-            $guid = $record->GUID;
-            
-            $vernaculars = $this->getPESIVernacularsByGUID( $guid );
-            
-            foreach( $vernaculars as $vernacular ) {
-                if( !isset( $vernacular->vernacular ) ) continue;
-                
-                $response[] = array(
-                    "id" => $guid,
-                    "name" => $vernacular->vernacular,
-                    "type" => "/name/common",
-                    "score" => 100,
-                    "match" => true,
-                    "language" => $vernacular->language_code,
-                    "reference" => "pesi",
-                    "taxon" => $record->scientificname,
-                    "taxon_id" => $guid,
-                );
+        if( is_array($records) ) {
+            // Check all records and analyze the data
+            foreach( $records as $record ) {
+                $guid = $record->GUID;
+
+                $vernaculars = $this->getPESIVernacularsByGUID( $guid );
+
+                foreach( $vernaculars as $vernacular ) {
+                    if( !isset( $vernacular->vernacular ) ) continue;
+
+                    $response[] = array(
+                        "id" => $guid,
+                        "name" => $vernacular->vernacular,
+                        "type" => "/name/common",
+                        "score" => 100,
+                        "match" => true,
+                        "language" => $vernacular->language_code,
+                        "reference" => "pesi",
+                        "taxon" => $record->scientificname,
+                        "taxon_id" => $guid,
+                    );
+                }
             }
         }
         

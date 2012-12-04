@@ -10,7 +10,7 @@ return array(
 	'name'=>'OpenUp! Common Names Webservice',
 
 	// preloading 'log' component
-	'preload'=>array('log','soapPesi'),
+	'preload'=>array('log','soapPesi','jsonrpcNHMW'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -85,6 +85,9 @@ return array(
                  */
 		'soapPesi'=>array(
 			'class'=>'PESI'
+		),
+		'jsonrpcNHMW'=>array(
+			'class'=>'NHMWCommonNames'
 		),
 	),
 

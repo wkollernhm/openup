@@ -54,7 +54,7 @@ class JSONCommonNamesController extends Controller {
         // ask all services
         $webservices = WSComponent::getWebservices();
         foreach ($webservices as $webservice) {
-            $response = $webservice->query($query['query']);
+            $response += $webservice->query($query['query']);
         }
 
         return $response;
