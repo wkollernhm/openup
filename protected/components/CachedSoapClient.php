@@ -18,6 +18,10 @@ class CachedSoapClient {
     private $m_options = null;
     private $m_dbh = null;
     private $m_table = "soap_cache";
+    /**
+     * @var Service 
+     */
+    private $m_model_service = null;
     
     /**
      * Timeout for cached responses in seconds
@@ -34,19 +38,16 @@ class CachedSoapClient {
     public function __construct($wsdl, $options = array() ) {
         $this->m_wsdl = $wsdl;
         $this->m_options = $options;
-    }
-    
-    /**
-     * Enable caching for the SoapClient
-     * @param string $name Name of database
-     * @param string $host Host of database
-     * @param string $user User for accessing the database
-     * @param string $pass Password for user
-     * @param string $table Name of table to use for caching
-     */
-    public function setCaching( $name, $host, $user, $pass, $table = "soap_cache" ) {
-        $this->m_dbh = new PDO("mysql:dbname=" . $name . ";host=" . $host, $user, $pass);
-        $this->m_table = $table;
+
+        // find the service definition
+        $this->m_model_service = Service::model()->findByAttributes(array(
+            'url' => $this->m_wsdl
+        ));
+        
+        // check for valid service definition
+        if( $this->m_model_service == null ) {
+            throw new Exception("Invalid Soap service");
+        }
     }
     
     /**
@@ -79,39 +80,35 @@ class CachedSoapClient {
         }
         // This is a WSDL defined function, which means we can check the cache for it
         else {
-            // Check if caching is enabled
-            if( $this->m_dbh != null ) {
-                $sth = $this->m_dbh->prepare( "SELECT `response` FROM `" . $this->m_table . "` WHERE `wsdl` = ? AND `function` = ? AND `query` = ? AND `` < DATE_SUB(NOW(), INTERVAL SECOND ?)" );
-                $sth->bindValue( 1, sha1($this->m_wsdl), PDO::PARAM_STR );
-                $sth->bindValue( 2, $name, PDO::PARAM_STR );
-                $sth->bindValue( 3, serialize($arguments), PDO::PARAM_STR );
-                $sth->bindValue( 4, $this->m_timeout, PDO::PARAM_INT );
-                $sth->execute();
-                $response = $sth->fetch(PDO::FETCH_ASSOC);
-                
-                // Check if there is a cached response available
-                if( $response ) {
-                    error_log( "Cached response" );
-                    return unserialize($response);
-                }
-                // If not query Soap-Service and cache the response
-                else {
-                    $response = call_user_func_array( array( $this->SoapClient(), $name ), $arguments );
-                    
-                    // Write response & query information to database
-                    $sth = $this->m_dbh->prepare( "INSERT INTO `" . $this->m_table . "` ( `wsdl`, `function`, `query`, `response` ) values ( ?, ?, ?, ? )" );
-                    $sth->bindValue( 1, sha1($this->m_wsdl), PDO::PARAM_STR );
-                    $sth->bindValue( 2, $name, PDO::PARAM_STR );
-                    $sth->bindValue( 3, serialize($arguments), PDO::PARAM_STR );
-                    $sth->bindValue( 4, serialize($response), PDO::PARAM_STR );
-                    $sth->execute();
-
-                    return $response;
-                }
+            // construct query string
+            $query = serialize(array($name,$arguments));
+            
+            // find cached entries for this query
+            $model_webserviceCache = WebserviceCache::model()->findByAttributes(array(
+                'service_id' => $this->m_model_service->id,
+                'query' => $query
+            ));
+            
+            // check for cached result
+            if( $model_webserviceCache == null ) {
+                $model_webserviceCache = new WebserviceCache();
             }
+            
+            // check if cached result is still valid
+            if( $model_webserviceCache->timestamp >= (time() - $this->m_timeout) ) {
+                return unserialize($model_webserviceCache->response);
+            }
+            // we need to refresh the request and cache the response
             else {
-                // If caching didn't work, call the function directly
-                return call_user_func_array( array( $this->SoapClient(), $name ), $arguments );
+                $response = call_user_func_array( array( $this->SoapClient(), $name ), $arguments );
+                
+                // remember new values and cache them
+                $model_webserviceCache->service_id = $this->m_model_service->id;
+                $model_webserviceCache->query = $query;
+                $model_webserviceCache->response = serialize($response);
+                $model_webserviceCache->save();
+                
+                return $response;
             }
         }
     }
