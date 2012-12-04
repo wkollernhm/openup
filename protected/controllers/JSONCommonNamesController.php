@@ -52,7 +52,7 @@ class JSONCommonNamesController extends Controller {
         }
         
         // ask services
-        $pesiSoapClient = new CachedSoapClient('http://www.eu-nomen.eu/portal/soap.php?wsdl=1');
+        $pesiSoapClient = Yii::app()->soapPesi;
         // Fetch records matching our query
         $records = $pesiSoapClient->getPESIRecords( $query['query'], false );
         

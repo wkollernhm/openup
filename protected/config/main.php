@@ -78,7 +78,7 @@ return array(
 			),
 		),
 		'soapPesi'=>array(
-			'class'=>'SoapBehavior',
+			'class'=>'CachedSoapClient',
                         'wsdl'=>'http://www.eu-nomen.eu/portal/soap.php?wsdl=1',
 		),
 	),

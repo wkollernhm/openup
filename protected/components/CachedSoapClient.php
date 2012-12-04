@@ -12,12 +12,9 @@
  * @since 2012-03-8 
  * @package at.ac.nhmwien
  */
-class CachedSoapClient {
-    private $m_soapClient = null;
+class CachedSoapClient extends CComponent {
     private $m_wsdl = null;
-    private $m_options = null;
-    private $m_dbh = null;
-    private $m_table = "soap_cache";
+    private $m_soapClient = null;
     /**
      * @var Service 
      */
@@ -30,15 +27,25 @@ class CachedSoapClient {
     private $m_timeout = 604800;
     
     /**
-     * This constructor equals the SoapClient constructor for migration reasons
-     * See the SoapClient documentation for details
-     * @param string $wsdl
-     * @param array $options 
+     * Internal helper function which returns a "real" SoapClient object
+     * @return SoapClient 
      */
-    public function __construct($wsdl, $options = array() ) {
-        $this->m_wsdl = $wsdl;
-        $this->m_options = $options;
+    private function SoapClient() {
+        if( $this->m_soapClient == null ) {
+            $this->m_soapClient = new SoapClient( $this->m_wsdl );
+        }
+        
+        return $this->m_soapClient;
+    }
 
+    /**
+     * Setter function for WSDL, automatically checks the service for validity
+     * @param string $value URI to WSDL file
+     * @throws Exception
+     */
+    public function setWsdl($value) {
+        $this->m_wsdl = $value;
+        
         // find the service definition
         $this->m_model_service = Service::model()->findByAttributes(array(
             'url' => $this->m_wsdl
@@ -51,15 +58,9 @@ class CachedSoapClient {
     }
     
     /**
-     * Internal helper function which returns a "real" SoapClient object
-     * @return SoapClient 
+     * Init function, but do nothing
      */
-    private function SoapClient() {
-        if( $this->m_soapClient == null ) {
-            $this->m_soapClient = new SoapClient( $this->m_wsdl, $this->m_options );
-        }
-        
-        return $this->m_soapClient;
+    public function init() {
     }
     
     /**
@@ -75,7 +76,7 @@ class CachedSoapClient {
      */
     public function __call( $name , $arguments ) {
         // Check if we have a "standard" SoapClient function
-        if( method_exists( "SoapClient", $name ) ) {
+        if( method_exists( "CachedSoapClient", $name ) ) {
             return call_user_func_array( array( $this->SoapClient(), $name ), $arguments );
         }
         // This is a WSDL defined function, which means we can check the cache for it
