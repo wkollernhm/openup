@@ -5,22 +5,64 @@
  * @author wkoller
  */
 class WSComponent extends CComponent {
-    private static $m_wsComponents = array();
+    protected $m_service_id = null;
+
+    /**
+     * Timeout for cached responses in seconds
+     * @var int 
+     */
+    private $m_timeout = 10;
     
     /**
-     * Automatically add self to components in constructor
-     * NOTE: Don't forget to call the parent constructor in your sub-classes
+     * Returns the cached response for a given query
+     * @param mixed $query Query to look for
+     * @return mixed null if no valid response was found, else the response
      */
-    public function __construct() {
-        WSComponent::$m_wsComponents[] = $this;
+    protected function getCachedResponse($query) {
+        if( $this->m_service_id == null ) {
+            throw new Exception('Set service Id before using the cache!');
+        }
+        $query = sha1(serialize($query));   // using SHA1 to make this quicker
+        
+        // find cached entry for this query
+        $model_webserviceCache = WebserviceCache::model()->findByAttributes(array(
+            'service_id' => $this->m_service_id,
+            'query' => $query
+        ));
+        
+        if( $model_webserviceCache != null && $model_webserviceCache->timestamp >= (time() - $this->m_timeout) ) {
+            return unserialize($model_webserviceCache->response);
+        }
+
+        return null;
     }
     
     /**
-     * Return all registered webservices
-     * @return array Array of WSComponent instances
+     * Store a response in the cache
+     * @param mixed $query Query to cache this response for
+     * @param mixed $response Response to cache
+     * @throws Exception
      */
-    public static function getWebServices() {
-        return WSComponent::$m_wsComponents;
+    protected function setCachedResponse($query,$response) {
+        if( $this->m_service_id == null ) {
+            throw new Exception('Set service Id before using the cache!');
+        }
+        $query = sha1(serialize($query));   // using SHA1 to make this quicker
+        $response = serialize($response);
+        
+        // find old cached entry for this query
+        $model_webserviceCache = WebserviceCache::model()->findByAttributes(array(
+            'service_id' => $this->m_service_id,
+            'query' => $query
+        ));
+        if( $model_webserviceCache == null ) $model_webserviceCache = new WebserviceCache();
+        
+        // remember new values and cache them
+        $model_webserviceCache->service_id = $this->m_service_id;
+        $model_webserviceCache->query = $query;
+        $model_webserviceCache->response = $response;
+        $model_webserviceCache->timestamp = time();
+        $model_webserviceCache->save();
     }
     
     /**

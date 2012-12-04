@@ -43,6 +43,7 @@ class WebserviceCache extends CActiveRecord
 		return array(
 			array('service_id, query', 'required'),
 			array('service_id, timestamp', 'numerical', 'integerOnly'=>true),
+			array('query', 'length', 'max'=>40),
 			array('response', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
