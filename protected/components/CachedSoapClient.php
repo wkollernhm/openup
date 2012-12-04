@@ -12,7 +12,7 @@
  * @since 2012-03-8 
  * @package at.ac.nhmwien
  */
-class CachedSoapClient extends WSComponent {
+abstract class CachedSoapClient extends WSComponent {
     /**
      * WSDL URI
      * @var string

@@ -10,12 +10,13 @@ return array(
 	'name'=>'OpenUp! Common Names Webservice',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array('log','soapPesi'),
 
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.components.Webservices.*',
 	),
 
 	'modules'=>array(
@@ -77,9 +78,13 @@ return array(
 				*/
 			),
 		),
+            
+                /*
+                 * Webservice components for use with the common names service
+                 * NOTE: Do not forget to add to preload option
+                 */
 		'soapPesi'=>array(
-			'class'=>'CachedSoapClient',
-                        'wsdl'=>'http://www.eu-nomen.eu/portal/soap.php?wsdl=1',
+			'class'=>'PESI'
 		),
 	),
 

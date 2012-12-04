@@ -4,7 +4,13 @@
  *
  * @author wkoller
  */
-class WSComponent extends CComponent {
+abstract class WSComponent extends CComponent {
+    /**
+     * Array of WSComponent instances
+     * @var array
+     */
+    private static $m_wsComponents = array();
+    
     /**
      * Internal reference variable for the service id, needs to be set in the sub-implementation
      * @var int ID of registered service
@@ -16,6 +22,14 @@ class WSComponent extends CComponent {
      * @var int 
      */
     private $m_timeout = 86400;
+    
+    /**
+     * Return all registered webservice components
+     * @return type
+     */
+    public static function getWebservices() {
+        return WSComponent::$m_wsComponents;
+    }
     
     /**
      * Returns the cached response for a given query
@@ -73,5 +87,13 @@ class WSComponent extends CComponent {
      * init stub
      */
     public function init() {
+        WSComponent::$m_wsComponents[] = $this;
     }
+    
+    /**
+     * Query the webservice for a given term
+     * @param string $term Term to search for
+     * @return array Structured response information
+     */
+    public abstract function query($term);
 }

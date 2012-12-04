@@ -50,33 +50,11 @@ class JSONCommonNamesController extends Controller {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
         }
-        
-        // ask services
-        $pesiSoapClient = Yii::app()->soapPesi;
-        // Fetch records matching our query
-        $records = $pesiSoapClient->getPESIRecords( $query['query'], false );
-        
-        // Check all records and analyze the data
-        foreach( $records as $record ) {
-            $guid = $record->GUID;
-            
-            $vernaculars = $pesiSoapClient->getPESIVernacularsByGUID( $guid );
-            
-            foreach( $vernaculars as $vernacular ) {
-                if( !isset( $vernacular->vernacular ) ) continue;
-                
-                $response[] = array(
-                    "id" => $guid,
-                    "name" => $vernacular->vernacular,
-                    "type" => "/name/common",
-                    "score" => 100,
-                    "match" => true,
-                    "language" => $vernacular->language_code,
-                    "reference" => "pesi",
-                    "taxon" => $record->scientificname,
-                    "taxon_id" => $guid,
-                );
-            }
+
+        // ask all services
+        $webservices = WSComponent::getWebservices();
+        foreach ($webservices as $webservice) {
+            $response = $webservice->query($query['query']);
         }
 
         return $response;
