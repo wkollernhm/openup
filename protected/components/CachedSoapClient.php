@@ -12,7 +12,7 @@
  * @since 2012-03-8 
  * @package at.ac.nhmwien
  */
-class CachedSoapClient extends CComponent {
+class CachedSoapClient extends WSComponent {
     private $m_wsdl = null;
     private $m_soapClient = null;
     /**
@@ -55,12 +55,6 @@ class CachedSoapClient extends CComponent {
         if( $this->m_model_service == null ) {
             throw new Exception("Invalid Soap service");
         }
-    }
-    
-    /**
-     * Init function, but do nothing
-     */
-    public function init() {
     }
     
     /**
