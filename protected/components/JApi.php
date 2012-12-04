@@ -38,6 +38,7 @@ in ExampleController.php
  *	
  * @package Japi
  * @author Kevin Gravier <kevin@mrkmg.com>
+ * @author Wolfgang Koller <wolfgang.koller@nhm-wien.ac.at>
  * @license MIT http://www.opensource.org/licenses/mit-license.php
  * @version 1.0.0
  * @todo Adjust errors to be more informational, for example change missing required params to 400 and missing actions to 404
@@ -149,8 +150,17 @@ class JApi extends CAction
 	private function send()
 	{
 		header('Content-Type: application/json');
-		echo CJavaScript::jsonEncode($this->returnData);
+                echo preg_replace_callback('/\\\u(\w\w\w\w)/', "JApi::correct_utf8_escapes", CJavaScript::jsonEncode($this->returnData));
 	}
+        
+        /**
+         * Callback function for replacing UTF-8 escaped characters by their real character
+         * @param array $matches
+         * @return string String representation of the UTF-8 escaped symbol
+         */
+        public static function correct_utf8_escapes($matches) {
+            return html_entity_decode('&#'.hexdec($matches[1]).';', ENT_NOQUOTES, 'UTF-8');
+        }
 	
 	
 }
