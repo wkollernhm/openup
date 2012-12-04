@@ -41,9 +41,8 @@ class WebserviceCache extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, service_id, query', 'required'),
-			array('id, service_id, timestamp', 'numerical', 'integerOnly'=>true),
-			array('query', 'length', 'max'=>255),
+			array('service_id, query', 'required'),
+			array('service_id, timestamp', 'numerical', 'integerOnly'=>true),
 			array('response', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

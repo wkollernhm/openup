@@ -106,6 +106,7 @@ class CachedSoapClient {
                 $model_webserviceCache->service_id = $this->m_model_service->id;
                 $model_webserviceCache->query = $query;
                 $model_webserviceCache->response = serialize($response);
+                $model_webserviceCache->timestamp = time();
                 $model_webserviceCache->save();
                 
                 return $response;

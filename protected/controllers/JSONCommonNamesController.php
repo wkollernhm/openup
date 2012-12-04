@@ -15,7 +15,7 @@ class JSONCommonNamesController extends Controller {
         }
         // check for single query mode
         else if( $query != null ) {
-            $return = $this->handleQuery(json_decode($query));
+            $return = $this->handleQuery(json_decode($query, true));
         }
         // multi-query mode?
         else if( $queries != null ) {
@@ -49,6 +49,34 @@ class JSONCommonNamesController extends Controller {
         if( $query == null || $query['type'] != '/name/common' ) {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
+        }
+        
+        // ask services
+        $pesiSoapClient = new CachedSoapClient('http://www.eu-nomen.eu/portal/soap.php?wsdl=1');
+        // Fetch records matching our query
+        $records = $pesiSoapClient->getPESIRecords( $query['query'], false );
+        
+        // Check all records and analyze the data
+        foreach( $records as $record ) {
+            $guid = $record->GUID;
+            
+            $vernaculars = $pesiSoapClient->getPESIVernacularsByGUID( $guid );
+            
+            foreach( $vernaculars as $vernacular ) {
+                if( !isset( $vernacular->vernacular ) ) continue;
+                
+                $response[] = array(
+                    "id" => $guid,
+                    "name" => $vernacular->vernacular,
+                    "type" => "/name/common",
+                    "score" => 100,
+                    "match" => true,
+                    "language" => $vernacular->language_code,
+                    "reference" => "pesi",
+                    "taxon" => $record->scientificname,
+                    "taxon_id" => $guid,
+                );
+            }
         }
 
         return $response;
