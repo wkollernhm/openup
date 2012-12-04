@@ -13,7 +13,15 @@
  * @package at.ac.nhmwien
  */
 class CachedSoapClient extends WSComponent {
+    /**
+     * WSDL URI
+     * @var string
+     */
     private $m_wsdl = null;
+    /**
+     * SoapClient instance for querying the external service
+     * @var SoapClient
+     */
     private $m_soapClient = null;
     
     /**

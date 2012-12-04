@@ -5,13 +5,17 @@
  * @author wkoller
  */
 class WSComponent extends CComponent {
+    /**
+     * Internal reference variable for the service id, needs to be set in the sub-implementation
+     * @var int ID of registered service
+     */
     protected $m_service_id = null;
 
     /**
      * Timeout for cached responses in seconds
      * @var int 
      */
-    private $m_timeout = 10;
+    private $m_timeout = 86400;
     
     /**
      * Returns the cached response for a given query
