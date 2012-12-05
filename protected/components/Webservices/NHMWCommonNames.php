@@ -6,7 +6,7 @@
  */
 
 /**
- * Description of JACQCommonNames
+ * Description of NHMWCommonNames
  *
  * @author wkoller
  */
@@ -14,9 +14,14 @@ class NHMWCommonNames extends CachedJSONRPCClient {
     public function init() {
         parent::init();
         
-        $this->url = 'http://192.168.56.101/NetBeans/NHM/jacq/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php';
+        $this->url = 'http://131.130.131.11/develop/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php';
     }
     
+    /**
+     * Query NHMW for common names for a given scientific name
+     * @param string $term Scientific name to search for
+     * @return array Results in the correct form
+     */
     public function query($term) {
         $response = array();
         
