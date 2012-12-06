@@ -6,11 +6,11 @@
  */
 
 /**
- * Description of NHMWCommonNames
+ * Description of NHMW
  *
  * @author wkoller
  */
-class NHMWCommonNames extends CachedJSONRPCClient {
+class NHMW extends CachedJSONRPCClient {
     public function init() {
         parent::init();
         

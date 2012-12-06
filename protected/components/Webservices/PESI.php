@@ -7,7 +7,7 @@
 class PESI extends CachedSoapClient {
     public function init() {
         parent::init();
-        $this->wsdl = 'http://www.eu-nomen.eu/portal/soap.php?wsdl=1';
+        $this->url = 'http://www.eu-nomen.eu/portal/soap.php?wsdl=1';
     }
     
     /**

@@ -10,7 +10,7 @@ return array(
 	'name'=>'OpenUp! Common Names Webservice',
 
 	// preloading 'log' component
-	'preload'=>array('log','soapPesi','jsonrpcNHMW'),
+	'preload'=>array('log','PESI','NHMW','COL'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -83,11 +83,14 @@ return array(
                  * Webservice components for use with the common names service
                  * NOTE: Do not forget to add to preload option
                  */
-		'soapPesi'=>array(
+		'PESI'=>array(
 			'class'=>'PESI'
 		),
-		'jsonrpcNHMW'=>array(
-			'class'=>'NHMWCommonNames'
+		'NHMW'=>array(
+			'class'=>'NHMW'
+		),
+		'COL'=>array(
+			'class'=>'COL'
 		),
 	),
 
