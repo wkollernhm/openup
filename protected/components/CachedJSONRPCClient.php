@@ -14,11 +14,6 @@
  */
 abstract class CachedJSONRPCClient extends WSComponent {
     /**
-     * Remote URL
-     * @var string
-     */
-    private $m_url = null;
-    /**
      * SoapClient instance for querying the external service
      * @var SoapClient
      */
@@ -36,26 +31,6 @@ abstract class CachedJSONRPCClient extends WSComponent {
         return $this->m_jsonRPCClient;
     }
 
-    /**
-     * Setter function for WSDL, automatically checks the service for validity
-     * @param string $value URI to WSDL file
-     * @throws Exception
-     */
-    public function setUrl($value) {
-        $this->m_url = $value;
-        
-        // find the service definition & check validity
-        $model_service = Service::model()->findByAttributes(array(
-            'url' => $this->m_url
-        ));
-        if( $model_service == null ) {
-            throw new Exception("Invalid JSON-RPC service");
-        }
-        
-        // remember service id
-        $this->m_service_id = $model_service->id;
-    }
-    
     /**
      * Invoked if the function called does not exist. It checks if this is
      * either a "native" SoapClient method or a function which is defined by the

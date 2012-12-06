@@ -14,11 +14,6 @@
  */
 abstract class CachedSoapClient extends WSComponent {
     /**
-     * WSDL URI
-     * @var string
-     */
-    private $m_wsdl = null;
-    /**
      * SoapClient instance for querying the external service
      * @var SoapClient
      */
@@ -30,32 +25,12 @@ abstract class CachedSoapClient extends WSComponent {
      */
     private function SoapClient() {
         if( $this->m_soapClient == null ) {
-            $this->m_soapClient = new SoapClient( $this->m_wsdl );
+            $this->m_soapClient = new SoapClient( $this->m_url );
         }
         
         return $this->m_soapClient;
     }
 
-    /**
-     * Setter function for WSDL, automatically checks the service for validity
-     * @param string $value URI to WSDL file
-     * @throws Exception
-     */
-    public function setWsdl($value) {
-        $this->m_wsdl = $value;
-        
-        // find the service definition & check validity
-        $model_service = Service::model()->findByAttributes(array(
-            'url' => $this->m_wsdl
-        ));
-        if( $model_service == null ) {
-            throw new Exception("Invalid Soap service");
-        }
-        
-        // remember service id
-        $this->m_service_id = $model_service->id;
-    }
-    
     /**
      * Invoked if the function called does not exist. It checks if this is
      * either a "native" SoapClient method or a function which is defined by the

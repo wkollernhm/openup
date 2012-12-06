@@ -21,7 +21,13 @@ abstract class WSComponent extends CComponent {
      * Timeout for cached responses in seconds
      * @var int 
      */
-    private $m_timeout = 86400;
+    protected $m_timeout = 86400;
+    
+    /**
+     * URI to identify this webservice
+     * @var string 
+     */
+    protected $m_url = null;
     
     /**
      * Return all registered webservice components
@@ -29,6 +35,26 @@ abstract class WSComponent extends CComponent {
      */
     public static function getWebservices() {
         return WSComponent::$m_wsComponents;
+    }
+    
+    /**
+     * Setter function for URL, automatically checks the service for validity
+     * @param string $value URI to identify the webservice with
+     * @throws Exception
+     */
+    protected function setUrl($value) {
+        $this->m_url = $value;
+        
+        // find the service definition & check validity
+        $model_service = Service::model()->findByAttributes(array(
+            'url' => $this->m_url
+        ));
+        if( $model_service == null ) {
+            throw new Exception("Invalid service");
+        }
+        
+        // remember service id
+        $this->m_service_id = $model_service->id;
     }
     
     /**
