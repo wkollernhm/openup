@@ -14,7 +14,7 @@ class NHMW extends CachedJSONRPCClient {
     public function init() {
         parent::init();
         
-        $this->url = 'http://131.130.131.11/develop/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php';
+        $this->url = 'http://131.130.131.9/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php';
     }
     
     /**
