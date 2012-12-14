@@ -149,7 +149,7 @@ class JApi extends CAction
 	*/
 	private function send()
 	{
-		header('Content-Type: application/json');
+		header('Content-Type: application/json; charset=utf-8');
                 echo preg_replace_callback('/\\\u(\w\w\w\w)/', "JApi::correct_utf8_escapes", CJavaScript::jsonEncode($this->returnData));
 	}
         
