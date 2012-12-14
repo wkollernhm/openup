@@ -1,0 +1,10 @@
+# enable rewrite engine
+RewriteEngine On
+
+# send all requests which contain query or queries to webservice
+RewriteCond %{QUERY_STRING}  (query|queries)=(.*)
+RewriteRule index.php        index.php?r=jSONCommonNames/japi&action=getCommonNames&%1=%2 [L]
+
+# send all empty requests to common names webservice
+RewriteCond %{QUERY_STRING}  ^$
+RewriteRule index.php        index.php?r=jSONCommonNames/japi&action=getCommonNames [L]

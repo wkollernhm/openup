@@ -31,19 +31,21 @@ class NHMW extends CachedJSONRPCClient {
             foreach( $result['searchresult'] as $searchresult ) {
                 if( isset($searchresult['species']) && is_array($searchresult['species']) ) {
                     foreach( $searchresult['species'] as $species ) {
-                        foreach($species['commonNames'] as $commonName) {
-                            $response[] = array(
-                                "id" => $commonName['id'],
-                                "name" => $commonName['name'],
-                                "type" => "/name/common",
-                                "score" => $species['ratio'] * 100.0,
-                                "match" => ($species['ratio'] == 1) ? true : false,
-                                "language" => $commonName['language'],
-                                "geography" => $commonName['geography'],
-                                "reference" => "nhmw",
-                                "taxon" => $species['taxon'],
-                                "taxon_id" => $species['taxonID'],
-                            );
+                        if( isset($species['commonNames']) && is_array($species['commonNames']) ) {
+                            foreach($species['commonNames'] as $commonName) {
+                                $response[] = array(
+                                    "id" => $commonName['id'],
+                                    "name" => $commonName['name'],
+                                    "type" => "/name/common",
+                                    "score" => $species['ratio'] * 100.0,
+                                    "match" => ($species['ratio'] == 1) ? true : false,
+                                    "language" => $commonName['language'],
+                                    "geography" => $commonName['geography'],
+                                    "reference" => "nhmw",
+                                    "taxon" => $species['taxon'],
+                                    "taxon_id" => $species['taxonID'],
+                                );
+                            }
                         }
                     }
                 }
