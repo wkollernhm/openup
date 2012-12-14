@@ -46,7 +46,7 @@ class JSONCommonNamesController extends Controller {
         $response = array();
 
         // check for valid query
-        if( $query == null || $query['type'] != '/name/common' ) {
+        if( $query == null || !isset($query['type']) || $query['type'] != '/name/common' || !isset($query['query']) ) {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
         }

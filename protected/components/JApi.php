@@ -161,8 +161,4 @@ class JApi extends CAction
         public static function correct_utf8_escapes($matches) {
             return html_entity_decode('&#'.hexdec($matches[1]).';', ENT_NOQUOTES, 'UTF-8');
         }
-	
-	
 }
-
-?>
