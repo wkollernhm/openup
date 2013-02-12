@@ -4,22 +4,22 @@
  * For details on the actual service see http://open-up.eu/content/common-names-service
  */
 class JSONCommonNamesController extends Controller {
-    public function japiGetCommonNames($query = null, $queries = null) {
+    public function japiGetCommonNames($query = NULL, $queries = NULL) {
         $return = array( 'result' => array() );
 
         // check if we received no request
-        if( $query == null && $queries == null ) {
+        if( $query == NULL && $queries == NULL ) {
             $return['name'] = 'OpenUp! Common Names Service';
             $return['identifierSpace'] = 'http://open-up.eu/commonNames/';
             $return['schemaSpace'] = 'http://open-up.eu/commonNames/';
             unset($return['result']);
         }
         // check for single query mode
-        else if( $query != null ) {
+        else if( $query != NULL ) {
             $return['result'] = $this->handleQuery(json_decode($query, true));
         }
         // multi-query mode?
-        else if( $queries != null ) {
+        else if( $queries != NULL ) {
             $queries = json_decode($queries, true);
             
             // check if we have a valid queries array
@@ -47,7 +47,7 @@ class JSONCommonNamesController extends Controller {
         $response = array();
 
         // check for valid query
-        if( $query == null || !isset($query['type']) || $query['type'] != '/name/common' || !isset($query['query']) ) {
+        if( $query == NULL || !isset($query['type']) || $query['type'] != '/name/common' || !isset($query['query']) ) {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
         }
