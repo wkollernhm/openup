@@ -4,13 +4,7 @@
  *
  * @author wkoller
  */
-abstract class WSComponent extends CComponent {
-    /**
-     * Array of WSComponent instances
-     * @var array
-     */
-    private static $m_wsComponents = array();
-    
+abstract class WSComponent extends SourceComponent {
     /**
      * Internal reference variable for the service id, needs to be set in the sub-implementation
      * @var int ID of registered service
@@ -28,14 +22,6 @@ abstract class WSComponent extends CComponent {
      * @var string 
      */
     protected $m_url = null;
-    
-    /**
-     * Return all registered webservice components
-     * @return type
-     */
-    public static function getWebservices() {
-        return WSComponent::$m_wsComponents;
-    }
     
     /**
      * Setter function for URL, automatically checks the service for validity
@@ -108,18 +94,4 @@ abstract class WSComponent extends CComponent {
         $model_webserviceCache->timestamp = time();
         $model_webserviceCache->save();
     }
-    
-    /**
-     * init stub
-     */
-    public function init() {
-        WSComponent::$m_wsComponents[] = $this;
-    }
-    
-    /**
-     * Query the webservice for a given term
-     * @param string $term Term to search for
-     * @return array Structured response information
-     */
-    public abstract function query($term);
 }

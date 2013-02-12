@@ -52,10 +52,10 @@ class JSONCommonNamesController extends Controller {
             exit();
         }
 
-        // ask all services
-        $webservices = WSComponent::getWebservices();
-        foreach ($webservices as $webservice) {
-            $response = array_merge($response, $webservice->query($query['query']) );
+        // ask all sources
+        $sources = SourceComponent::getSources();
+        foreach ($sources as $source) {
+            $response = array_merge($response, $source->query($query['query']) );
         }
 
         return $response;
