@@ -5,17 +5,18 @@
  */
 class JSONCommonNamesController extends Controller {
     public function japiGetCommonNames($query = null, $queries = null) {
-        $return = array();
+        $return = array( 'result' => array() );
 
         // check if we received no request
         if( $query == null && $queries == null ) {
             $return['name'] = 'OpenUp! Common Names Service';
             $return['identifierSpace'] = 'http://open-up.eu/commonNames/';
             $return['schemaSpace'] = 'http://open-up.eu/commonNames/';
+            unset($return['result']);
         }
         // check for single query mode
         else if( $query != null ) {
-            $return = $this->handleQuery(json_decode($query, true));
+            $return['result'] = $this->handleQuery(json_decode($query, true));
         }
         // multi-query mode?
         else if( $queries != null ) {
@@ -25,7 +26,7 @@ class JSONCommonNamesController extends Controller {
             if( is_array($queries) ) {
                 // handle each sub-query separately
                 foreach( $queries as $index => $query ) {
-                    $return[$index] = $this->handleQuery($query);
+                    $return['result'][$index] = $this->handleQuery($query);
                 }
             }
             else {
