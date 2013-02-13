@@ -10,7 +10,7 @@ return array(
 	'name'=>'OpenUp! Common Names Webservice',
 
 	// preloading 'log' component
-	'preload'=>array('log','PESI','NHMW','COL'),
+	'preload'=>array('log','PESI','NHMW','COL','SourceCzech'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -92,6 +92,9 @@ return array(
 		'COL'=>array(
 			'class'=>'COL'
 		),
+                'SourceCzech' => array(
+                    'class' => 'SourceCzech'
+                )
 	),
 
 	// application-level parameters that can be accessed
