@@ -31,6 +31,13 @@ class COL extends CachedRESTClient {
                     if( isset($result['common_names']) ) {
                         // cycle through common names and return as result
                         foreach( $result['common_names'] as $common_name ) {
+                            // extract references & add them as string array
+                            $references = array();
+                            foreach($common_name['references'] as $reference) {
+                                $references[] = join(' ', $reference);
+                            }
+                            
+                            // construct final response
                             $response[] = array(
                                 "id" => $common_name['name'],
                                 "name" => $common_name['name'],
@@ -38,7 +45,7 @@ class COL extends CachedRESTClient {
                                 "score" => 100,
                                 "match" => true,
                                 "language" => $common_name['language'],
-                                "reference" => "col",
+                                "reference" => "[Catalogue of Life] " . join(';', $references),
                                 "taxon" => $result['name'],
                                 "taxon_id" => $result['id'],
                             );
