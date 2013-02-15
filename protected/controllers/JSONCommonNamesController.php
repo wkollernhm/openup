@@ -51,6 +51,9 @@ class JSONCommonNamesController extends Controller {
             header('HTTP/1.0 400 Bad Request', true, 400);
             exit();
         }
+        
+        // parse the name before sending it to the services
+        $query['query'] = Yii::app()->NameParser->parse($query['query']);
 
         // ask all sources
         $sources = SourceComponent::getSources();

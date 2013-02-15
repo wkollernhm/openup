@@ -10,7 +10,7 @@ return array(
 	'name'=>'OpenUp! Common Names Webservice',
 
 	// preloading 'log' component
-	'preload'=>array('log','PESI','NHMW','COL','SourceCzech'),
+	'preload'=>array('log','PESI','NHMW','COL','SourceCzech','NameParser'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -59,10 +59,10 @@ return array(
 			'password' => 'openup',
 			'charset' => 'utf8',
 		),
-		'errorHandler'=>array(
+		/*'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
-		),
+		),*/
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -94,6 +94,9 @@ return array(
 		),
                 'SourceCzech' => array(
                     'class' => 'SourceCzech'
+                ),
+                'NameParser' => array(
+                    'class' => 'NameParser'
                 )
 	),
 
