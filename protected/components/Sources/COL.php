@@ -32,7 +32,7 @@ class COL extends CachedRESTClient {
                         // cycle through common names and return as result
                         foreach( $result['common_names'] as $common_name ) {
                             // extract references & add them as string array
-                            $references = array();
+                            $references = array('Bisby F., Roskov Y., Culham A., Orrell T., Nicolson D., Paglinawan L., Bailly N., Kirk P., Bourgoin T., Baillargeon G., Hernandez F., De Wever A., Kunze T., eds (2013). Species 2000 & ITIS Catalogue of Life, 8th February 2013. Digital resource at www.catalogueoflife.org/col/. Species 2000: Reading, UK.');
                             foreach($common_name['references'] as $reference) {
                                 $references[] = join(' ', $reference);
                             }
@@ -45,7 +45,8 @@ class COL extends CachedRESTClient {
                                 "score" => 100,
                                 "match" => true,
                                 "language" => $common_name['language'],
-                                "reference" => "[Catalogue of Life] " . join(';', $references),
+                                "reference" => join(';', $references),
+                                "references" => $references,
                                 "taxon" => $result['name'],
                                 "taxon_id" => $result['id'],
                             );

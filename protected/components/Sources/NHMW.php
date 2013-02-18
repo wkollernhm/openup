@@ -42,6 +42,7 @@ class NHMW extends CachedJSONRPCClient {
                                     "language" => $commonName['language'],
                                     "geography" => $commonName['geography'],
                                     "reference" => "nhmw",
+                                    "references" => array('nhmw'),
                                     "taxon" => $species['taxon'],
                                     "taxon_id" => $species['taxonID'],
                                 );

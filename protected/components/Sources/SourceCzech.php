@@ -28,6 +28,7 @@ class SourceCzech extends SourceComponent {
                 "language" => 'ces',
                 "geography" => NULL,
                 "reference" => "Květena",
+                "references" => array("Květena"),
                 "taxon" => $model_sourceCzechPrague->Cele_jmeno,
                 "taxon_id" => $model_sourceCzechPrague->ID,
             );

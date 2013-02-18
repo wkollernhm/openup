@@ -13,7 +13,7 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
-        'application.components.Webservices.*',
+        'application.components.Sources.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

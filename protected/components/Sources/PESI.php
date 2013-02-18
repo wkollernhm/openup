@@ -38,6 +38,7 @@ class PESI extends CachedSoapClient {
                         "match" => true,
                         "language" => $vernacular->language_code,
                         "reference" => "pesi",
+                        "references" => array('pesi'),
                         "taxon" => $record->scientificname,
                         "taxon_id" => $guid,
                     );
