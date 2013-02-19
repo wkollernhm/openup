@@ -8,21 +8,22 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'OpenUp! Common Names Webservice',
     // preloading 'log' component
-    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'SourceCzech', 'NameParser'),
+    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'NameParser'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
+        'application.models.sources.*',
         'application.components.*',
         'application.components.Sources.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
-        /*'gii' => array(
+        'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => 'gii',
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('192.168.56.1', '::1'),
-        ),*/
+        ),
     ),
     // application components
     'components' => array(
@@ -84,8 +85,11 @@ return array(
         'COL' => array(
             'class' => 'COL'
         ),
-        'SourceCzech' => array(
-            'class' => 'SourceCzech'
+        'CzechPrague' => array(
+            'class' => 'CzechPrague'
+        ),
+        'AllearterDk' => array(
+            'class' => 'AllearterDk'
         ),
         'NameParser' => array(
             'class' => 'NameParser'

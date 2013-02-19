@@ -6,11 +6,11 @@
  */
 
 /**
- * Description of SourceCzech
+ * Description of CzechPrague
  *
  * @author wkoller
  */
-class SourceCzech extends SourceComponent {
+class CzechPrague extends SourceComponent {
     public function query($term) {
         $response = array();
         
@@ -28,7 +28,7 @@ class SourceCzech extends SourceComponent {
                 "language" => 'ces',
                 "geography" => NULL,
                 "reference" => "Květena",
-                "references" => array("Květena"),
+                "references" => array("Institute of Botany, Academy of Sciences of Czech Republic - Květena"),
                 "taxon" => $model_sourceCzechPrague->Cele_jmeno,
                 "taxon_id" => $model_sourceCzechPrague->ID,
             );
