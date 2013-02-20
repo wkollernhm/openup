@@ -23,6 +23,7 @@ class NameParser extends CComponent {
             $this->m_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
             // create a short timeout to not block the service
             socket_set_option($this->m_socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => Yii::app()->params['nameParser']['timeout'], 'usec' => 0)); 
+            socket_set_option($this->m_socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => Yii::app()->params['nameParser']['timeout'], 'usec' => 0)); 
             // connect to the service
             $this->m_connected = socket_connect($this->m_socket, Yii::app()->params['nameParser']['address'], Yii::app()->params['nameParser']['port']);
         }

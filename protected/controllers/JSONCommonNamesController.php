@@ -58,7 +58,12 @@ class JSONCommonNamesController extends Controller {
         // ask all sources
         $sources = SourceComponent::getSources();
         foreach ($sources as $source) {
-            $response = array_merge($response, $source->query($query['query']) );
+            $sourceResponse = $source->query($query['query']);
+
+            // check for valid response
+            if( is_array($sourceResponse) ) {
+                $response = array_merge($response, $sourceResponse);
+            }
         }
 
         return $response;
