@@ -8,6 +8,8 @@ class COL extends CachedRESTClient {
     public function init() {
         parent::init();
         $this->url = "http://webservice.catalogueoflife.org/webservice?response=full&format=php&name=";
+        
+        $this->m_timeout = 2592000; // 30 days
     }
     
     /**
@@ -39,16 +41,14 @@ class COL extends CachedRESTClient {
                             
                             // construct final response
                             $response[] = array(
-                                "id" => $common_name['name'],
                                 "name" => $common_name['name'],
-                                "type" => "/name/common",
+                                "language" => $common_name['language'],
+                                'geography' => NULL,
+                                'period' => NULL,
+                                "taxon" => $result['name'],
+                                "references" => $references,
                                 "score" => 100,
                                 "match" => true,
-                                "language" => $common_name['language'],
-                                "reference" => join(';', $references),
-                                "references" => $references,
-                                "taxon" => $result['name'],
-                                "taxon_id" => $result['id'],
                             );
                         }
                     }

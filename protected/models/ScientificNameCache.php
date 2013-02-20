@@ -1,21 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "tbl_common_names_cache".
+ * This is the model class for table "tbl_scientific_name_cache".
  *
- * The followings are the available columns in table 'tbl_common_names_cache':
+ * The followings are the available columns in table 'tbl_scientific_name_cache':
  * @property integer $id
  * @property string $name
- * @property string $language
- * @property string $geography
- * @property string $period
  */
-class CommonNamesCache extends CActiveRecord {
+class ScientificNameCache extends CActiveRecord {
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return CommonNamesCache the static model class
+     * @return ScientificNameCache the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -25,7 +22,7 @@ class CommonNamesCache extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'tbl_common_names_cache';
+        return 'tbl_scientific_name_cache';
     }
 
     /**
@@ -36,12 +33,10 @@ class CommonNamesCache extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('name', 'required'),
-            array('name, geography', 'length', 'max' => 100),
-            array('language', 'length', 'max' => 15),
-            array('period', 'length', 'max' => 45),
+            array('name', 'length', 'max' => 100),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, name, language, geography, period', 'safe', 'on' => 'search'),
+            array('id, name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,9 +57,6 @@ class CommonNamesCache extends CActiveRecord {
         return array(
             'id' => 'ID',
             'name' => 'Name',
-            'language' => 'Language',
-            'geography' => 'Geography',
-            'period' => 'Period',
         );
     }
 
@@ -80,9 +72,6 @@ class CommonNamesCache extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('language', $this->language, true);
-        $criteria->compare('geography', $this->geography, true);
-        $criteria->compare('period', $this->period, true);
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,

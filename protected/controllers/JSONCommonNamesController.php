@@ -66,7 +66,89 @@ class JSONCommonNamesController extends Controller {
             }
         }
 
-        return $response;
+        // deduplicate response before returning it
+        return $this->deduplicateResponse($response);
+    }
+    
+    /**
+     * deduplicates a set of results returned from the individual sources
+     * @param type $response
+     * @return type
+     */
+    private function deduplicateResponse($response) {
+        $dedupResponse = array();
+        
+        // handle each result and deduplicate it
+        foreach($response as $result) {
+            // try to find cached version of common name
+            $model_commonNamesCache = CommonNamesCache::model()->findByAttributes(array(
+                'name' => $result['name'],
+                'language' => $result['language'],
+                'geography' => $result['geography'],
+                'period' => $result['period'],
+            ));
+            // if this name wasn't cached yet, create it
+            if( $model_commonNamesCache == NULL ) {
+                $model_commonNamesCache = new CommonNamesCache();
+                $model_commonNamesCache->name = $result['name'];
+                $model_commonNamesCache->language = $result['language'];
+                $model_commonNamesCache->geography = $result['geography'];
+                $model_commonNamesCache->period = $result['period'];
+                $model_commonNamesCache->save();
+            }
+            
+            // clean the scientific name
+            $result['taxon'] = Yii::app()->NameParser->parse($result['taxon']);
+            
+            // find the scientific name
+            $model_scientificName = ScientificNameCache::model()->findByAttributes(array(
+                'name' => $result['taxon']
+            ));
+            // create cached scientific name if it doesn't exist yet
+            if( $model_scientificName == NULL ) {
+                $model_scientificName = new ScientificNameCache();
+                $model_scientificName->name = $result['taxon'];
+                $model_scientificName->save();
+            }
+            
+            // check if this common name already exists in results
+            if( isset($dedupResponse[$model_commonNamesCache->id])
+                && $dedupResponse[$model_commonNamesCache->id]['taxon_id'] == $model_scientificName->id ) {
+                // just update references
+                if( is_array($result['references']) ) {
+                    $dedupResponse[$model_commonNamesCache->id]['references'] = array_merge(
+                        $dedupResponse[$model_commonNamesCache->id]['references'],
+                        $result['references']
+                    );
+                }
+            }
+            // if not add a new entry
+            else {
+                $dedupResponse[$model_commonNamesCache->id] = array(
+                    // common name info
+                    'id' => $model_commonNamesCache->id,
+                    'name' => $model_commonNamesCache->name,
+                    'type' => array('/name/common'),
+                    'language' => $model_commonNamesCache->language,
+                    'geography' => $model_commonNamesCache->geography,
+                    'period' => $model_commonNamesCache->period,
+                    // scientific name info
+                    'taxon' => $model_scientificName->name,
+                    'score' => $result['score'],
+                    'match' => $result['match'],
+                    'taxon_id' => $model_scientificName->id,
+                    'reference' => NULL,
+                    'references' => $result['references']
+                );
+            }
+        }
+        
+        // for compatibility reasons, add reference as concatenated string
+        foreach($dedupResponse as &$dedupResult) {
+            $dedupResult['reference'] = join(';', $dedupResult['references']);
+        }
+        
+        return array_values($dedupResponse);
     }
 
     /**

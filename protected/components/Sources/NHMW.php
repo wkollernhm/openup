@@ -34,17 +34,14 @@ class NHMW extends CachedJSONRPCClient {
                         if( isset($species['commonNames']) && is_array($species['commonNames']) ) {
                             foreach($species['commonNames'] as $commonName) {
                                 $response[] = array(
-                                    "id" => $commonName['id'],
                                     "name" => $commonName['name'],
-                                    "type" => "/name/common",
-                                    "score" => $species['ratio'] * 100.0,
-                                    "match" => ($species['ratio'] == 1) ? true : false,
                                     "language" => $commonName['language'],
                                     "geography" => $commonName['geography'],
-                                    "reference" => "nhmw",
+                                    'period' => NULL,   // TODO: fetch period from service
+                                    "score" => $species['ratio'] * 100.0,
+                                    "match" => ($species['ratio'] == 1) ? true : false,
                                     "references" => array('nhmw'),
                                     "taxon" => $species['taxon'],
-                                    "taxon_id" => $species['taxonID'],
                                 );
                             }
                         }

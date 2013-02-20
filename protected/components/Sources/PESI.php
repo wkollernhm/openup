@@ -8,6 +8,8 @@ class PESI extends CachedSoapClient {
     public function init() {
         parent::init();
         $this->url = 'http://www.eu-nomen.eu/portal/soap.php?wsdl=1';
+        
+        $this->m_timeout = 2592000; // 30 days
     }
     
     /**
@@ -31,16 +33,14 @@ class PESI extends CachedSoapClient {
                     if( !isset( $vernacular->vernacular ) ) continue;
 
                     $response[] = array(
-                        "id" => $guid,
                         "name" => $vernacular->vernacular,
-                        "type" => "/name/common",
+                        "language" => $vernacular->language_code,
+                        'geography' => NULL,
+                        'period' => NULL,
                         "score" => 100,
                         "match" => true,
-                        "language" => $vernacular->language_code,
-                        "reference" => "pesi",
                         "references" => array('pesi'),
                         "taxon" => $record->scientificname,
-                        "taxon_id" => $guid,
                     );
                 }
             }

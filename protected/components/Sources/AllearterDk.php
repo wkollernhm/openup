@@ -19,16 +19,14 @@ class AllearterDk extends SourceComponent {
             
             // construct final response
             $response[] = array(
-                "id" => sha1($model_sourceAllearterDk->Dansk_navn),
                 "name" => $model_sourceAllearterDk->Dansk_navn,
-                "type" => "/name/common",
+                "language" => 'dan',
+                "geography" => NULL,
+                "period" => NULL,
+                "taxon" => $model_sourceAllearterDk->Videnskabeligt_navn,
+                "references" => array($model_sourceAllearterDk->Referencetekst),
                 "score" => 100,
                 "match" => true,
-                "language" => 'dan',
-                "reference" => $model_sourceAllearterDk->Referencetekst,
-                "references" => array($model_sourceAllearterDk->Referencetekst),
-                "taxon" => $model_sourceAllearterDk->Videnskabeligt_navn,
-                "taxon_id" => sha1($model_sourceAllearterDk->Videnskabeligt_navn),
             );
         }
         

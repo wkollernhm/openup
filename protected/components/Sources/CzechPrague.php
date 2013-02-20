@@ -20,17 +20,14 @@ class CzechPrague extends SourceComponent {
         
         foreach( $models_sourceCzechPrague as $model_sourceCzechPrague ) {
             $response[] = array(
-                "id" => $model_sourceCzechPrague->ID,
                 "name" => $model_sourceCzechPrague->Ceske_jmeno,
-                "type" => "/name/common",
-                "score" => 100.0,
-                "match" => true,
                 "language" => 'ces',
                 "geography" => NULL,
-                "reference" => "Květena",
-                "references" => array("Institute of Botany, Academy of Sciences of Czech Republic - Květena"),
+                'period' => NULL,
                 "taxon" => $model_sourceCzechPrague->Cele_jmeno,
-                "taxon_id" => $model_sourceCzechPrague->ID,
+                "references" => array("Institute of Botany, Academy of Sciences of Czech Republic - Květena"),
+                "score" => 100.0,
+                "match" => true,
             );
         }
         
