@@ -36,8 +36,9 @@ class CommonNamesCache extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('name', 'required'),
-            array('name, geography', 'length', 'max' => 100),
+            array('name', 'length', 'max' => 100),
             array('language', 'length', 'max' => 15),
+            array('geography', 'length', 'max' => 200),
             array('period', 'length', 'max' => 45),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.

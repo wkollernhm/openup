@@ -43,29 +43,37 @@ abstract class CachedJSONRPCClient extends WSComponent {
      * @return type 
      */
     public function __call( $name , $arguments ) {
-        // Check if we have a "standard" SoapClient function
-        if( method_exists( "CachedJSONRPCClient", $name ) ) {
-            return call_user_func_array( array( $this->JSONRPCClient(), $name ), $arguments );
-        }
-        // This is a WSDL defined function, which means we can check the cache for it
-        else {
-            // construct query string
-            $query = array($name,$arguments);
-            
-            // check for cached result
-            $response = $this->getCachedResponse($query);
-            if( $response != null ) {
-                return $response;
+        try {
+            // Check if we have a "standard" SoapClient function
+            if( method_exists( "CachedJSONRPCClient", $name ) ) {
+                return call_user_func_array( array( $this->JSONRPCClient(), $name ), $arguments );
             }
-            // we need to refresh the request and cache the response
+            // This is a WSDL defined function, which means we can check the cache for it
             else {
-                $response = call_user_func_array( array( $this->JSONRPCClient(), $name ), $arguments );
+                // construct query string
+                $query = array($name,$arguments);
 
-                // cache the response
-                $this->setCachedResponse($query, $response);
-                
-                return $response;
+                // check for cached result
+                $response = $this->getCachedResponse($query);
+                if( $response != null ) {
+                    return $response;
+                }
+                // we need to refresh the request and cache the response
+                else {
+                    $response = call_user_func_array( array( $this->JSONRPCClient(), $name ), $arguments );
+
+                    // cache the response
+                    $this->setCachedResponse($query, $response);
+
+                    return $response;
+                }
             }
+        }
+        catch(Exception $e) {
+            error_log($e->getMessage());
+            error_log($e->getTraceAsString());
+            
+            return null;
         }
     }
 }
