@@ -26,31 +26,36 @@ class ArtsdatabankenNo extends CachedSoapClient {
         
         // check for found response
         if( isset($ArtssokResult->LatinskNavn) ) {
-            $LatinskNavn = $ArtssokResult->LatinskNavn;
-            $Takson = $LatinskNavn->Takson;
+            // create fake array for latin name results
+            $LatinskNavns = $ArtssokResult->LatinskNavn;
+            if( !is_array($LatinskNavns) ) $LatinskNavns = array( $LatinskNavns );
             
-            // create fake array for single result entries
-            $Popularnavns = $Takson->Popularnavn;
-            if( !is_array($Popularnavns) ) $Popularnavns = array( $Popularnavns );
-
-            // add all popularnavn
-            foreach( $Popularnavns as $Popularnavn ) {
+            foreach($LatinskNavns as $LatinskNavn) {
+                $Takson = $LatinskNavn->Takson;
+            
                 // create fake array for single result entries
-                $Navns = $Popularnavn->Navn;
-                if( !is_array($Navns) ) $Navns = array($Navns);
-                
-                // cycle through actual names and add them
-                foreach( $Navns as $Navn ) {
-                    $response[] = array(
-                        "name" => $Navn->_,
-                        "language" => $Popularnavn->Spraak,
-                        'geography' => NULL,
-                        'period' => NULL,
-                        "score" => 100,
-                        "match" => true,
-                        "references" => array('artsdatabanken.no'),
-                        "taxon" => $LatinskNavn->VitenskapligNavn,
-                    );
+                $Popularnavns = $Takson->Popularnavn;
+                if( !is_array($Popularnavns) ) $Popularnavns = array( $Popularnavns );
+
+                // add all popularnavn
+                foreach( $Popularnavns as $Popularnavn ) {
+                    // create fake array for single result entries
+                    $Navns = $Popularnavn->Navn;
+                    if( !is_array($Navns) ) $Navns = array($Navns);
+
+                    // cycle through actual names and add them
+                    foreach( $Navns as $Navn ) {
+                        $response[] = array(
+                            "name" => $Navn->_,
+                            "language" => $Popularnavn->Spraak,
+                            'geography' => NULL,
+                            'period' => NULL,
+                            "score" => 100,
+                            "match" => true,
+                            "references" => array('artsdatabanken.no'),
+                            "taxon" => $LatinskNavn->VitenskapligNavn,
+                        );
+                    }
                 }
             }
         }
