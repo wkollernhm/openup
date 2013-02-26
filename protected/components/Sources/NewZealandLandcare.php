@@ -16,6 +16,10 @@ class NewZealandLandcare extends SourceComponent {
             foreach($models_newZealandLandcare as $model_newZealandLandcare) {
                 $references = array('New Zealand Landcare');
                 if( $model_newZealandLandcare->ReferenceGenCitation != NULL ) $references[] = $model_newZealandLandcare->ReferenceGenCitation;
+
+                // parse the returned name and compare it to the actual query term, in order to only return 100% matches
+                $nameFull = Yii::app()->NameParser->parse($model_newZealandLandcare->NameFull);
+                if( $nameFull != $term ) continue;
                 
                 // construct response data
                 $response[] = array(
@@ -23,7 +27,7 @@ class NewZealandLandcare extends SourceComponent {
                     "language" => $model_newZealandLandcare->LanguageISOCode,
                     "geography" => $model_newZealandLandcare->GeoRegionName,
                     "period" => NULL,
-                    "taxon" => $model_newZealandLandcare->NameFull,
+                    "taxon" => $nameFull,
                     "references" => $references,
                     "score" => 100,
                     "match" => true,
