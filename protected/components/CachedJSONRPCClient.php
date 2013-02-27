@@ -25,7 +25,7 @@ abstract class CachedJSONRPCClient extends WSComponent {
      */
     private function JSONRPCClient() {
         if( $this->m_jsonRPCClient == null ) {
-            $this->m_jsonRPCClient = new jsonRPCClient($this->m_url);
+            $this->m_jsonRPCClient = new jsonRPCClient($this->url);
         }
         
         return $this->m_jsonRPCClient;

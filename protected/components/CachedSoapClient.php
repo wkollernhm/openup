@@ -25,7 +25,7 @@ abstract class CachedSoapClient extends WSComponent {
      */
     private function SoapClient() {
         if( $this->m_soapClient == null ) {
-            $this->m_soapClient = new SoapClient( $this->m_url, array('trace' => true) );
+            $this->m_soapClient = new SoapClient( $this->url, array('trace' => true) );
         }
         
         return $this->m_soapClient;
@@ -72,8 +72,10 @@ abstract class CachedSoapClient extends WSComponent {
         catch(Exception $e) {
             error_log($e->getMessage());
             error_log($e->getTraceAsString());
-            error_log($this->m_soapClient->__getLastRequestHeaders());
-            error_log($this->m_soapClient->__getLastRequest());
+            if( $this->m_soapClient != NULL ) {
+                error_log($this->m_soapClient->__getLastRequestHeaders());
+                error_log($this->m_soapClient->__getLastRequest());
+            }
             
             return null;
         }

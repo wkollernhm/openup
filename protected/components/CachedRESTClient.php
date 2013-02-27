@@ -15,7 +15,7 @@ abstract class CachedRESTClient extends WSComponent {
         $response = $this->getCachedResponse($query);
         if( $response == null ) {
             // fetch the response from the rest service
-            $response = file_get_contents($this->m_url . $query);
+            $response = file_get_contents($this->url . $query);
             $this->setCachedResponse($query, $response);
         }
         

@@ -21,7 +21,7 @@ abstract class WSComponent extends SourceComponent {
      * URI to identify this webservice
      * @var string 
      */
-    protected $m_url = null;
+    private $m_url = null;
     
     /**
      * Setter function for URL, automatically checks the service for validity
@@ -41,6 +41,14 @@ abstract class WSComponent extends SourceComponent {
         
         // remember service id
         $this->m_service_id = $model_service->id;
+    }
+    
+    /**
+     * Return the URL of this service
+     * @return type
+     */
+    protected function getUrl() {
+        return $this->m_url;
     }
     
     /**
