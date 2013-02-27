@@ -8,7 +8,7 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'OpenUp! Common Names Webservice',
     // preloading 'log' component
-    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'NameParser'),
+    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'NameParser', 'NHMWService'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
@@ -99,7 +99,10 @@ return array(
         ),
         'NameParser' => array(
             'class' => 'NameParser'
-        )
+        ),
+        'NHMWService' => array(
+            'class' => 'NHMWService'
+        ),
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']

@@ -6,13 +6,19 @@
  */
 abstract class SourceComponent extends CComponent {
     /**
+     * can be set to prevent this component from registering automatically
+     * @var boolean 
+     */
+    protected $m_noRegister = false;
+    
+    /**
      * @var array array of registered source components
      */
     private static $m_sourceComponents = array();
     
     /**
      * Return all registered webservice components
-     * @return type
+     * @return array
      */
     public static function getSources() {
         return SourceComponent::$m_sourceComponents;
@@ -22,7 +28,7 @@ abstract class SourceComponent extends CComponent {
      * keep reference when initializing
      */
     public function init() {
-        SourceComponent::$m_sourceComponents[] = $this;
+        if( !$this->m_noRegister ) SourceComponent::$m_sourceComponents[] = $this;
     }
 
     /**
