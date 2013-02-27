@@ -40,7 +40,7 @@ class wboeOeaw extends CachedRESTClient {
                                 'geography' => NULL,
                                 'period' => NULL,
                                 "taxon" => $species['taxon'],
-                                "references" => $result['reference'],
+                                "references" => array($result['reference']),
                                 "score" => $species['ratio'] * 100.0,
                                 "match" => ($species['ratio'] == 1) ? true : false,
                             );
