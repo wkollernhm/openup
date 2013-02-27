@@ -8,7 +8,7 @@ return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'OpenUp! Common Names Webservice',
     // preloading 'log' component
-    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'NameParser', 'NHMWService'),
+    'preload' => array('log', 'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'wboeOeaw', 'NameParser', 'NHMWService'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
@@ -97,6 +97,10 @@ return array(
         'NewZealandLandcare' => array(
             'class' => 'NewZealandLandcare'
         ),
+        'wboeOeaw' => array(
+            'class' => 'wboeOeaw'
+        ),
+        
         'NameParser' => array(
             'class' => 'NameParser'
         ),
