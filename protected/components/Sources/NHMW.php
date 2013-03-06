@@ -30,7 +30,7 @@ class NHMW extends SourceComponent {
                                     'period' => NULL,   // TODO: fetch period from service
                                     "score" => $species['ratio'] * 100.0,
                                     "match" => ($species['ratio'] == 1) ? true : false,
-                                    "references" => array('nhmw'),
+                                    "references" => array($commonName['reference']),
                                     "taxon" => $species['taxon'],
                                 );
                             }
