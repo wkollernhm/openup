@@ -16,9 +16,15 @@ class NewZealandLandcare extends SourceComponent {
         $models_newZealandLandcare = SourceNewZealandLandcare::model()->findAll($dbCriteria);
         // cycle through models and add them to result
         foreach($models_newZealandLandcare as $model_newZealandLandcare) {
-            // we add the new zealand landcare as a reference, since sometimes the field is empty
-            $references = array('New Zealand Landcare');
-            if( $model_newZealandLandcare->ReferenceGenCitation != NULL ) $references[] = $model_newZealandLandcare->ReferenceGenCitation;
+            // add reference for this name
+            $references = array();
+            if( $model_newZealandLandcare->ReferenceGenCitation != NULL ) {
+                $references[] = $model_newZealandLandcare->ReferenceGenCitation;
+            }
+            // default reference (if none was specified)
+            else {
+                $references[] = 'New Zealand Landcare';
+            }
 
             // parse the returned name and compare it to the actual query term, in order to only return 100% matches
             $nameFull = Yii::app()->NameParser->parse($model_newZealandLandcare->NameFull);
