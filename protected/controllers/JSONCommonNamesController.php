@@ -94,7 +94,10 @@ class JSONCommonNamesController extends Controller {
                 $model_commonNamesCache->language = $result['language'];
                 $model_commonNamesCache->geography = $result['geography'];
                 $model_commonNamesCache->period = $result['period'];
-                $model_commonNamesCache->save();
+                // check if saving the cached entry worked
+                if( !$model_commonNamesCache->save() ) {
+                    continue;
+                }
             }
             
             // clean the scientific name
@@ -108,7 +111,10 @@ class JSONCommonNamesController extends Controller {
             if( $model_scientificName == NULL ) {
                 $model_scientificName = new ScientificNameCache();
                 $model_scientificName->name = $result['taxon'];
-                $model_scientificName->save();
+                // check if saving the cached entry worked
+                if( !$model_scientificName->save() ) {
+                    continue;
+                }
             }
             
             // check if this common name already exists in results
@@ -137,7 +143,6 @@ class JSONCommonNamesController extends Controller {
                     'score' => $result['score'],
                     'match' => $result['match'],
                     'taxon_id' => $model_scientificName->id,
-                    'reference' => NULL,
                     'references' => $result['references']
                 );
             }
