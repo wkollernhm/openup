@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of wboeOeaw
+ * Names from the Austrian academy of sciences, wboe
  *
  * @author wkoller
  */

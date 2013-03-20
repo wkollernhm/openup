@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of NewZealandLandcare
+ * Names from NewZealand-Landcare
  *
  * @author wkoller
  */

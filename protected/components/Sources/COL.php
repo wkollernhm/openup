@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of COL
+ * COL webservice wrapper class
  *
  * @author wkoller
  */

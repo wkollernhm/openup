@@ -1,6 +1,6 @@
 <?php
 /**
- * PESI Webservice implementation
+ * Artsdatabanken Webservice implementation
  *
  * @author wkoller
  */
