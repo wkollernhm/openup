@@ -11,6 +11,9 @@ abstract class CachedRESTClient extends WSComponent {
      * @return mixed Response of service
      */
     protected function getResponse($query) {
+        // urlencode query by default
+        $query = urlencode($query);
+        
         // check for cached response of this query
         $response = $this->getCachedResponse($query);
         if( $response == null ) {

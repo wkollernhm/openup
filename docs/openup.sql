@@ -4,35 +4,26 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
--- Table `tbl_scientific_name`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `tbl_scientific_name` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `reference_id` VARCHAR(45) NULL DEFAULT NULL ,
-  `name` VARCHAR(200) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `tbl_common_names_cache`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `tbl_common_names_cache` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name_id` VARCHAR(20) NULL ,
-  `name` TEXT NULL ,
-  `language` VARCHAR(15) NULL ,
-  `geography` VARCHAR(45) NULL ,
-  `period` VARCHAR(45) NULL ,
-  `reference` TEXT NULL ,
-  `scientific_name_id` INT NOT NULL ,
+  `name` VARCHAR(100) NOT NULL ,
+  `language` VARCHAR(15) NULL DEFAULT NULL ,
+  `geography` VARCHAR(100) NULL DEFAULT NULL ,
+  `period` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_tbl_caching_tbl_cached_scientific_name_idx` (`scientific_name_id` ASC) ,
-  CONSTRAINT `fk_tbl_caching_tbl_cached_scientific_name`
-    FOREIGN KEY (`scientific_name_id` )
-    REFERENCES `tbl_scientific_name` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `commonName_UNIQUE` (`name` ASC, `language` ASC, `geography` ASC, `period` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tbl_scientific_name_cache`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tbl_scientific_name_cache` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(100) NOT NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -58,6 +49,7 @@ CREATE  TABLE IF NOT EXISTS `tbl_webservice_cache` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_tbl_webservice_cache_tbl_service1_idx` (`service_id` ASC) ,
   INDEX `query_INDEX` (`query` ASC) ,
+  INDEX `service_query_INDEX` (`query` ASC, `service_id` ASC) ,
   CONSTRAINT `fk_tbl_webservice_cache_tbl_service1`
     FOREIGN KEY (`service_id` )
     REFERENCES `tbl_service` (`id` )
@@ -78,5 +70,8 @@ START TRANSACTION;
 INSERT INTO `tbl_service` (`id`, `url`) VALUES (1, 'http://webservice.catalogueoflife.org/webservice?response=full&format=php&name=');
 INSERT INTO `tbl_service` (`id`, `url`) VALUES (2, 'http://131.130.131.9/taxamatch/jsonRPC/json_rpc_taxamatchMdld.php');
 INSERT INTO `tbl_service` (`id`, `url`) VALUES (3, 'http://www.eu-nomen.eu/portal/soap.php?wsdl=1');
+INSERT INTO `tbl_service` (`id`, `url`) VALUES (4, 'http://webtjenester.artsdatabanken.no/Artsnavnebase.asmx?WSDL');
+INSERT INTO `tbl_service` (`id`, `url`) VALUES (5, 'http://wboe.oeaw.ac.at/api/taxonid/');
+INSERT INTO `tbl_service` (`id`, `url`) VALUES (6, 'http://ws.luomus.fi/triplestore/search?predicate=dwc:scientificName&object=');
 
 COMMIT;
