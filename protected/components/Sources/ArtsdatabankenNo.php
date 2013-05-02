@@ -32,6 +32,9 @@ class ArtsdatabankenNo extends CachedSoapClient {
             
             foreach($LatinskNavns as $LatinskNavn) {
                 $Takson = $LatinskNavn->Takson;
+                
+                // check if latin name starts with search string in order to avoid wrong results
+                if(stripos($LatinskNavn->VitenskapligNavn, $term) !== 0) continue;
             
                 // create fake array for single result entries
                 $Popularnavns = $Takson->Popularnavn;
