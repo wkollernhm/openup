@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.5
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 16, 2013 at 08:38 AM
+-- Generation Time: Jul 16, 2013 at 11:21 AM
 -- Server version: 5.5.30-log
 -- PHP Version: 5.3.17
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -40,7 +40,9 @@ CREATE TABLE IF NOT EXISTS `tbl_source_azerbaijan` (
   `RUSNAME` varchar(150) DEFAULT NULL,
   `ENGNAME` varchar(150) DEFAULT NULL,
   `ACCENAME` varchar(150) DEFAULT NULL,
-  `OTHERNAME` varchar(150) DEFAULT NULL
+  `OTHERNAME` varchar(150) DEFAULT NULL,
+  KEY `SPECIES` (`SPECIES`,`AZERİNAME`),
+  KEY `SPECIES_2` (`SPECIES`,`SUBTAXA`,`AZERİNAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
