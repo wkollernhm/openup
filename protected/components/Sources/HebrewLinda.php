@@ -1,31 +1,31 @@
 <?php
 /**
- * Slovak names from Bratislava
+ * Hebrew names
  *
  * @author wkoller
  */
-class SlovakBratislava extends SourceComponent {
+class HebrewLinda extends SourceComponent {
     public function query($term) {
         $response = array();
         
         // find all fitting entries
-        $models_sourceSlovakBratislava = SourceSlovakBratislava::model()->findAllByAttributes(array(
-            'fldName' => $term
+        $models_sourceHebrewLinda = SourceHebrewLinda::model()->findAllByAttributes(array(
+            'CleanScientific_Name' => $term
         ));
         
         // cycle through result and handle each entry
-        foreach( $models_sourceSlovakBratislava as $model_sourceSlovakBratislava ) {
+        foreach( $models_sourceHebrewLinda as $model_sourceHebrewLinda ) {
             // check if we have a common name
-            if( empty($model_sourceSlovakBratislava->fldNameSK) ) continue;
+            if( empty($model_sourceHebrewLinda->HebrewSpecies) ) continue;
             
             // add response
             $response[] = array(
-                "name" => $model_sourceSlovakBratislava->fldNameSK_prefix . ' ' . $model_sourceSlovakBratislava->fldNameSK,
-                "language" => 'slk',
+                "name" => $model_sourceHebrewLinda->HebrewSpecies,
+                "language" => 'heb',
                 "geography" => NULL,
                 'period' => NULL,
-                "taxon" => $model_sourceSlovakBratislava->fldName,
-                "references" => array("Slovak Academy of Sciences"),
+                "taxon" => $model_sourceHebrewLinda->CleanScientific_Name,
+                "references" => array("Hebrew Names"),
                 "score" => 100.0,
                 "match" => true,
             );
