@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 18, 2013 at 08:23 AM
+-- Generation Time: Jul 18, 2013 at 08:43 AM
 -- Server version: 5.5.30-log
 -- PHP Version: 5.3.17
 
@@ -32,20 +32,20 @@ CREATE TABLE IF NOT EXISTS `tbl_source_hebrew_linda` (
   `delete` varchar(10) DEFAULT NULL,
   `ID` varchar(10) DEFAULT NULL,
   `ID_concord` varchar(10) DEFAULT NULL,
-  `NPA Species Code` varchar(10) DEFAULT NULL,
+  `NPA_Species_Code` varchar(10) DEFAULT NULL,
   `LatinName` varchar(100) DEFAULT NULL,
   `NPA_Hebrew` varchar(43) DEFAULT NULL,
-  `Frag Latin No` varchar(10) DEFAULT NULL,
-  `CleanScientific Name` varchar(150) DEFAULT NULL,
+  `Frag_Latin_No` varchar(10) DEFAULT NULL,
+  `CleanScientific_Name` varchar(150) DEFAULT NULL,
   `CleanScientific` varchar(100) DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `empty` varchar(10) DEFAULT NULL,
   `Frag_Hebrew` varchar(39) DEFAULT NULL,
   `HebrewGenus` varchar(20) DEFAULT NULL,
   `HebrewSpecies` varchar(18) DEFAULT NULL,
-  `Frag Family Code` varchar(10) DEFAULT NULL,
-  `Frag Family Name` varchar(10) DEFAULT NULL,
-  `matched by hand` varchar(50) DEFAULT NULL,
+  `Frag_Family_Code` varchar(10) DEFAULT NULL,
+  `Frag_Family_Name` varchar(10) DEFAULT NULL,
+  `matched_by_hand` varchar(50) DEFAULT NULL,
   `new` varchar(50) DEFAULT NULL,
   `merged` varchar(50) DEFAULT NULL,
   `problematic` varchar(100) DEFAULT NULL,
