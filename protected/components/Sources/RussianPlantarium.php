@@ -21,7 +21,7 @@ class RussianPlantarium extends SourceComponent {
             // add response
             $response[] = array(
                 "name" => $model_sourceRussianPlantarium->russian_name,
-                "language" => 'heb',
+                "language" => 'rus',
                 "geography" => NULL,
                 'period' => NULL,
                 "taxon" => $model_sourceRussianPlantarium->scientific_name,
