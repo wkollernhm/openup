@@ -106,6 +106,9 @@ return array(
         'LuomusFi' => array(
             'class' => 'LuomusFi'
         ),
+        'HebrewLinda' => array(
+            'class' => 'HebrewLinda'
+        ),
 
         'NameParser' => array(
             'class' => 'NameParser'
