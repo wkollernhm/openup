@@ -18,12 +18,12 @@ return array(
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
-        'gii' => array(
+        /*'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => 'gii',
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('192.168.56.1', '::1'),
-        ),
+        ),*/
     ),
     // application components
     'components' => array(
@@ -49,8 +49,8 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=openup',
             'emulatePrepare' => true,
-            'username' => 'openup',
-            'password' => 'openup',
+            'username' => '',
+            'password' => '',
             'charset' => 'utf8',
         ),
         /* 'errorHandler'=>array(
@@ -123,10 +123,10 @@ return array(
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
     'params' => array(
-        'adminEmail' => 'wolfgang.koller@nhm-wien.ac.at',
+        'adminEmail' => '',
         'nameParser' => array(
-            'address' => '127.0.0.1',   // IP-address of nameParser service
-            'port' => 4334,             // port of nameParser service
+            'address' => '',   // IP-address of nameParser service
+            'port' => 0,             // port of nameParser service
             'timeout' => 1,             // timeout in seconds
         ),
     ),
