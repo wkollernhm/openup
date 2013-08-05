@@ -164,4 +164,18 @@ class JSONCommonNamesController extends Controller {
             'japi'=>'JApi',
         );
     }
+    
+    /**
+     * Define file for output caching
+     */
+    public function filters() {
+        return array(
+            array(
+                'COutputCache',
+                'duration' => 86400,
+                'varyByParam' => array('query', 'queries'),
+            ),
+        );
+    }
+
 }
