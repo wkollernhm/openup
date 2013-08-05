@@ -27,10 +27,10 @@ class NHMW extends SourceComponent {
                                     "name" => $commonName['name'],
                                     "language" => $commonName['language'],
                                     "geography" => $commonName['geography'],
-                                    'period' => NULL,   // TODO: fetch period from service
+                                    "period" => $commonName['period'],
                                     "score" => $species['ratio'] * 100.0,
                                     "match" => ($species['ratio'] == 1) ? true : false,
-                                    "references" => array($commonName['reference']),
+                                    "references" => array($commonName['reference']),    // TODO: Fetching of references
                                     "taxon" => $species['taxon'],
                                 );
                             }
