@@ -19,6 +19,11 @@ class NameParser extends CComponent {
      */
     public function init() {
         try {
+            // check for sockets support
+            if( !extension_loaded('sockets') ) {
+                throw new Exception('Sockets extension required!');
+            }
+        
             // create a socket for communication with the nameParser service
             $this->m_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
             // create a short timeout to not block the service
@@ -28,6 +33,8 @@ class NameParser extends CComponent {
             $this->m_connected = socket_connect($this->m_socket, Yii::app()->params['nameParser']['address'], Yii::app()->params['nameParser']['port']);
         }
         catch(Exception $e) {
+            error_log('[NameParser] ' . $e->getMessage());
+            
             $this->m_socket = NULL;
             $this->m_connected = false;
         }
