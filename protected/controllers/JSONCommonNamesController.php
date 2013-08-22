@@ -12,7 +12,7 @@ class JSONCommonNamesController extends Controller {
      */
     public function japiGetCommonNames($query = NULL, $queries = NULL) {
         $return = array( 'result' => array() );
-
+        
         // check if we received no request
         if( $query == NULL && $queries == NULL ) {
             $return['name'] = 'OpenUp! Common Names Service';
@@ -43,13 +43,29 @@ class JSONCommonNamesController extends Controller {
 
         return $return;
     }
-
+    
+    public function actionGetCommonNamesSKOS($query = NULL, $queries = NULL) {
+        // used result from normal JSON call and encode it in SKOS
+        $response = $this->japiGetCommonNames($query, $queries);
+        
+        // check for service metadata response
+        if( !isset($response['result']) ) {
+            // output SKOS metadata response
+            $this->renderPartial('SKOS/metadata', array( 'response' => $response ));
+        }
+        // this is a response to a query
+        else {
+            // output SKOS response
+            $this->renderPartial('SKOS/response', array( 'response' => $response ));
+        }
+    }
+    
     /**
      * handle a single query and return the result
      * @param string $query Query as JSON-String
      * @return array response according to webservice specification
      */
-    private function handleQuery($query) {
+    protected function handleQuery($query) {
         $response = array();
 
         // check for valid query
