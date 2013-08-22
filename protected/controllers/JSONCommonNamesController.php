@@ -12,7 +12,11 @@ class JSONCommonNamesController extends Controller {
      */
     public function japiGetCommonNames($query = NULL, $queries = NULL) {
         $return = array( 'result' => array() );
-
+        
+        // decode input parameters
+        $query = json_decode($query, true);
+        $queries = json_decode($queries, true);
+        
         // check if we received no request
         if( $query == NULL && $queries == NULL ) {
             $return['name'] = 'OpenUp! Common Names Service';
@@ -21,35 +25,54 @@ class JSONCommonNamesController extends Controller {
             unset($return['result']);
         }
         // check for single query mode
-        else if( $query != NULL ) {
-            $return['result'] = $this->handleQuery(json_decode($query, true));
+        else if( $query != NULL && is_array($query) ) {
+            $return['result'] = $this->handleQuery($query);
         }
         // multi-query mode?
-        else if( $queries != NULL ) {
-            $queries = json_decode($queries, true);
-            
-            // check if we have a valid queries array
-            if( is_array($queries) ) {
-                // handle each sub-query separately
-                foreach( $queries as $index => $query ) {
-                    $return['result'][$index] = $this->handleQuery($query);
-                }
+        else if( $queries != NULL && is_array($queries) ) {
+            // handle each sub-query separately
+            foreach( $queries as $index => $query ) {
+                $return['result'][$index] = $this->handleQuery($query);
             }
-            else {
-                header('HTTP/1.0 400 Bad Request', true, 400);
-                exit();
-            }
+        }
+        else {
+            header('HTTP/1.0 400 Bad Request', true, 400);
+            exit();
         }
 
         return $return;
     }
-
+    
+    /**
+     * Receive common names for scientific name and output response in SKOS
+     * @param type $query
+     * @param type $queries
+     */
+    public function actionCommonNamesSKOS($query = NULL, $queries = NULL) {
+        // used result from normal JSON call and encode it in SKOS
+        $response = $this->japiGetCommonNames($query, $queries);
+        
+        // Send correct XML header
+        header('Content-Type: application/xml');
+        
+        // check for service metadata response
+        if( !isset($response['result']) ) {
+            // output SKOS metadata response
+            $this->renderPartial('SKOS/metadata', array( 'response' => $response ));
+        }
+        // this is a response to a query
+        else {
+            // output SKOS response
+            $this->renderPartial('SKOS/response', array( 'response' => $response ));
+        }
+    }
+    
     /**
      * handle a single query and return the result
      * @param string $query Query as JSON-String
      * @return array response according to webservice specification
      */
-    private function handleQuery($query) {
+    protected function handleQuery($query) {
         $response = array();
 
         // check for valid query
@@ -71,6 +94,7 @@ class JSONCommonNamesController extends Controller {
         );
     }
     
+<<<<<<< HEAD
     /**
      * Define file for output caching
      */
@@ -84,4 +108,14 @@ class JSONCommonNamesController extends Controller {
         );
     }
 
+=======
+    public function accessRules() {
+        return array(
+            array('allow', // deleting
+                'actions' => array('commonNamesSKOS'),
+                'users' => array('*'),
+            ),
+        );
+    }
+>>>>>>> refs/heads/develop
 }
