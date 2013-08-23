@@ -63,7 +63,7 @@ class JSONCommonNamesController extends Controller {
         // this is a response to a query
         else {
             // output SKOS response
-            $this->renderPartial('SKOS/response', array( 'response' => $response ));
+            $this->renderPartial('SKOS/response', array( 'entries' => $response['result'] ));
         }
     }
     
@@ -99,11 +99,11 @@ class JSONCommonNamesController extends Controller {
      */
     public function filters() {
         return array(
-            array(
+            /*array(
                 'COutputCache',
                 'duration' => 86400,
                 'varyByParam' => array('query', 'queries'),
-            ),
+            ),*/
         );
     }
 
