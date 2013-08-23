@@ -99,11 +99,11 @@ class JSONCommonNamesController extends Controller {
      */
     public function filters() {
         return array(
-            /*array(
+            array(
                 'COutputCache',
                 'duration' => 86400,
                 'varyByParam' => array('query', 'queries'),
-            ),*/
+            ),
         );
     }
 
