@@ -94,7 +94,6 @@ class JSONCommonNamesController extends Controller {
         );
     }
     
-<<<<<<< HEAD
     /**
      * Define file for output caching
      */
@@ -108,7 +107,6 @@ class JSONCommonNamesController extends Controller {
         );
     }
 
-=======
     public function accessRules() {
         return array(
             array('allow', // deleting
@@ -117,5 +115,4 @@ class JSONCommonNamesController extends Controller {
             ),
         );
     }
->>>>>>> refs/heads/develop
 }
