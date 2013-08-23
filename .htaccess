@@ -1,5 +1,5 @@
 # enable rewrite engine
-RewriteEngine On
+RewriteEngine Off
 
 # send all requests which contain query or queries to webservice
 RewriteCond %{QUERY_STRING}  (query|queries)=(.*)
