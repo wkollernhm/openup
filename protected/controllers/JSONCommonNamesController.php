@@ -68,6 +68,15 @@ class JSONCommonNamesController extends Controller {
     }
     
     /**
+     * Helper action for cleaning the cache
+     */
+    public function actionCleanCache() {
+        SourceComponent::cleanCaches();
+        
+        echo "Cache clean!";
+    }
+    
+    /**
      * handle a single query and return the result
      * @param string $query Query as JSON-String
      * @return array response according to webservice specification
@@ -102,7 +111,7 @@ class JSONCommonNamesController extends Controller {
             array(
                 'COutputCache',
                 'duration' => 86400,
-                'varyByParam' => array('query', 'queries'),
+                'varyByParam' => array('query', 'queries', 'noCache'),
             ),
         );
     }
@@ -110,7 +119,7 @@ class JSONCommonNamesController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // deleting
-                'actions' => array('commonNamesSKOS'),
+                'actions' => array('commonNamesSKOS', 'cleanCache'),
                 'users' => array('*'),
             ),
         );

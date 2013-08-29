@@ -63,6 +63,20 @@ abstract class SourceComponent extends CComponent {
         // deduplicate response before returning it
         return SourceComponent::deduplicateResponse($response);
     }
+    
+    /**
+     * Clean the cache for all service entries
+     */
+    public static function cleanCaches() {
+        // clean cache for all sources
+        $sources = SourceComponent::getSources();
+        foreach ($sources as $source) {
+            // only webservice components use the cache
+            if( is_subclass_of($source, 'WSComponent') ) {
+                $source->cleanCache();
+            }
+        }
+    }
 
     /**
      * deduplicates a set of results returned from the individual sources

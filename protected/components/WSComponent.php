@@ -63,12 +63,20 @@ abstract class WSComponent extends SourceComponent {
         $query = sha1(serialize($query));   // using SHA1 to make this quicker
         
         // find cached entry for this query
-        $model_webserviceCache = WebserviceCache::model()->findByAttributes(array(
+        $dbCriteria = new CDbCriteria();
+        $dbCriteria->addColumnCondition(array(
             'service_id' => $this->m_service_id,
             'query' => $query
         ));
+        // make sure it's recent enough
+        $dbCriteria->addCondition('timestamp >= ' . (time() - $this->m_timeout));
+        // only the most recent entry
+        $dbCriteria->order = 'timestamp DESC';
+        $dbCriteria->limit = 1;
+        $model_webserviceCache = WebserviceCache::model()->find($dbCriteria);
         
-        if( $model_webserviceCache != null && $model_webserviceCache->timestamp >= (time() - $this->m_timeout) ) {
+        // check for valid cache entry
+        if( $model_webserviceCache != null ) {
             return unserialize($model_webserviceCache->response);
         }
 
@@ -88,18 +96,28 @@ abstract class WSComponent extends SourceComponent {
         $query = sha1(serialize($query));   // using SHA1 to make this quicker
         $response = serialize($response);
         
-        // find old cached entry for this query
-        $model_webserviceCache = WebserviceCache::model()->findByAttributes(array(
-            'service_id' => $this->m_service_id,
-            'query' => $query
-        ));
-        if( $model_webserviceCache == null ) $model_webserviceCache = new WebserviceCache();
-        
         // remember new values and cache them
+        $model_webserviceCache = new WebserviceCache();
         $model_webserviceCache->service_id = $this->m_service_id;
         $model_webserviceCache->query = $query;
         $model_webserviceCache->response = $response;
         $model_webserviceCache->timestamp = time();
         $model_webserviceCache->save();
+    }
+    
+    /**
+     * Helper function for cleaning outdated cache entries
+     */
+    protected function cleanCache() {
+        // construct criteria for deleting
+        $dbCriteria = new CDbCriteria();
+        // only delete outdated entries
+        $dbCriteria->addCondition(array(
+            'timestamp < ' . (time() - $this->m_timeout),
+            'service_id' => $this->m_service_id,
+        ));
+        
+        // finally delete all matching entries
+        WebserviceCache::model()->deleteAll($dbCriteria);
     }
 }
