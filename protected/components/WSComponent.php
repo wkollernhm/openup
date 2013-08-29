@@ -64,12 +64,11 @@ abstract class WSComponent extends SourceComponent {
         
         // find cached entry for this query
         $dbCriteria = new CDbCriteria();
-        $dbCriteria->addColumnCondition(array(
-            'service_id' => $this->m_service_id,
-            'query' => $query
-        ));
+        $dbCriteria->compare('service_id', $this->m_service_id);
+        $dbCriteria->compare('query', $query);
         // make sure it's recent enough
-        $dbCriteria->addCondition('timestamp >= ' . (time() - $this->m_timeout));
+        $dbCriteria->compare('timestamp', '>=' . (time() - $this->m_timeout));
+        
         // only the most recent entry
         $dbCriteria->order = 'timestamp DESC';
         $dbCriteria->limit = 1;
@@ -112,10 +111,8 @@ abstract class WSComponent extends SourceComponent {
         // construct criteria for deleting
         $dbCriteria = new CDbCriteria();
         // only delete outdated entries
-        $dbCriteria->addCondition(array(
-            'timestamp < ' . (time() - $this->m_timeout),
-            'service_id' => $this->m_service_id,
-        ));
+        $dbCriteria->compare('timestamp', '<' . (time() - $this->m_timeout));
+        $dbCriteria->compare('service_id', '=' . $this->m_service_id);
         
         // finally delete all matching entries
         WebserviceCache::model()->deleteAll($dbCriteria);
