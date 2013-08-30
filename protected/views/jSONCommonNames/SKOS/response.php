@@ -16,7 +16,7 @@ foreach( $entries as $entry ) {
 ?>
   <skos:Concept rdf:about="http://openup.nhm-wien.ac.at/commonNames/<?php echo $entry['id']; ?>">
       <skos:prefLabel xml:lang="<?php echo $entry['language']; ?>"><?php echo xml_encode($entry['name']); ?></skos:prefLabel>
-      <skos:note>
+      <skos:note rdf:parseType="Literal">
           common name
           <br /><?php echo xml_encode(join(';', $entry['references'])); ?>
           <br /><?php echo xml_encode($entry['geography']); ?>
