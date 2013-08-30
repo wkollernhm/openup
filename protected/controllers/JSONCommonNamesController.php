@@ -109,7 +109,7 @@ class JSONCommonNamesController extends Controller {
     public function filters() {
         return array(
             array(
-                'COutputCache',
+                'CHttpCache',
                 'duration' => 86400,
                 'varyByParam' => array('query', 'queries', 'noCache'),
             ),
