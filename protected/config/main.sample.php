@@ -15,6 +15,7 @@ return array(
         'application.models.sources.*',
         'application.components.*',
         'application.components.Sources.*',
+        'application.widgets.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
