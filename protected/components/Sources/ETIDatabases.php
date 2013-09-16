@@ -8,18 +8,18 @@ class ETIDatabases extends SourceComponent {
     public function query($term) {
         $response = array();
         
-        $models_sourceCzechPrague = SourceCzechPrague::model()->findAllByAttributes(array(
-            'Cele_jmeno' => $term
-        ));
+        $dbCriteria = new CDbCriteria();
+        $dbCriteria->compare('Taxon', $term, true);
+        $models_sourceEtiDatabases = SourceEtiDatabases::model()->findAll($dbCriteria);
         
-        foreach( $models_sourceCzechPrague as $model_sourceCzechPrague ) {
+        foreach( $models_sourceEtiDatabases as $model_sourceEtiDatabases ) {
             $response[] = array(
-                "name" => $model_sourceCzechPrague->Ceske_jmeno,
-                "language" => 'ces',
+                "name" => $model_sourceEtiDatabases->Name,
+                "language" => $model_sourceEtiDatabases->iso_639_6,
                 "geography" => NULL,
                 'period' => NULL,
-                "taxon" => $model_sourceCzechPrague->Cele_jmeno,
-                "references" => array("Institute of Botany, Academy of Sciences of Czech Republic - Květena"),
+                "taxon" => Yii::app()->NameParser->parse($model_sourceEtiDatabases->Taxon),    // return a clean taxon name
+                "references" => array($model_sourceEtiDatabases->Source),
                 "score" => 100.0,
                 "match" => true,
             );
