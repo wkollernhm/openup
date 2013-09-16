@@ -73,8 +73,6 @@ class JSONCommonNamesController extends Controller {
      * @return array response according to webservice specification
      */
     protected function handleQuery($query) {
-        $response = array();
-
         // check for valid query
         if( $query == NULL || !isset($query['type']) || $query['type'] != '/name/common' || !isset($query['query']) ) {
             header('HTTP/1.0 400 Bad Request', true, 400);
