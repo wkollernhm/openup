@@ -1,6 +1,6 @@
 <?php
 /**
- * Common names from ETI Databases export
+ * Common names from Linnaeus Projects (Naturalis / ETI)
  *
  * @author wkoller
  */
@@ -8,18 +8,18 @@ class LinnaeusProjects extends SourceComponent {
     public function query($term) {
         $response = array();
         
-        $dbCriteria = new CDbCriteria();
-        $dbCriteria->compare('Taxon', $term, true);
-        $models_sourceEtiDatabases = SourceEtiDatabases::model()->findAll($dbCriteria);
+        $models_sourceLinnaeusProjects = SourceLinnaeusProjects::model()->findAllByAttributes(array(
+            'taxon' => $term
+        ));
         
-        foreach( $models_sourceEtiDatabases as $model_sourceEtiDatabases ) {
+        foreach( $models_sourceLinnaeusProjects as $model_sourceLinnaeusProjects ) {
             $response[] = array(
-                "name" => $model_sourceEtiDatabases->Name,
-                "language" => $model_sourceEtiDatabases->iso_639_6,
+                "name" => $model_sourceLinnaeusProjects->name,
+                "language" => $model_sourceLinnaeusProjects->language,
                 "geography" => NULL,
                 'period' => NULL,
-                "taxon" => Yii::app()->NameParser->parse($model_sourceEtiDatabases->Taxon),    // return a clean taxon name
-                "references" => array($model_sourceEtiDatabases->Source),
+                "taxon" => $model_sourceLinnaeusProjects->taxon,
+                "references" => array($model_sourceLinnaeusProjects->source),
                 "score" => 100.0,
                 "match" => true,
             );
