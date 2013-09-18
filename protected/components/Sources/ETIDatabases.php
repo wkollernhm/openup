@@ -13,12 +13,17 @@ class ETIDatabases extends SourceComponent {
         $models_sourceEtiDatabases = SourceEtiDatabases::model()->findAll($dbCriteria);
         
         foreach( $models_sourceEtiDatabases as $model_sourceEtiDatabases ) {
+            // return a clean taxon name
+            $taxon = Yii::app()->NameParser->parse($model_sourceEtiDatabases->Taxon);
+            // prevent sub-matches (e.g. species instead of genus)
+            if( $taxon != $term ) continue;
+            
             $response[] = array(
                 "name" => $model_sourceEtiDatabases->Name,
                 "language" => $model_sourceEtiDatabases->iso_639_6,
                 "geography" => NULL,
                 'period' => NULL,
-                "taxon" => Yii::app()->NameParser->parse($model_sourceEtiDatabases->Taxon),    // return a clean taxon name
+                "taxon" => $taxon,
                 "references" => array($model_sourceEtiDatabases->Source),
                 "score" => 100.0,
                 "match" => true,
