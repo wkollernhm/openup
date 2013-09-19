@@ -5,6 +5,30 @@
  * @author wkoller
  */
 class DyntaxaSe extends CachedSoapClient {
+    /**
+     * username to use for login
+     * @var string
+     */
+    public $userName;
+    
+    /**
+     * password to use for login
+     * @var string
+     */
+    public $password;
+    
+    /**
+     * application identifier to use for login
+     * @var string
+     */
+    public $applicationIdentifier;
+    
+    /**
+     * activiationrequired flag to use for login
+     * @var bool
+     */
+    public $isActivationRequired;
+    
     public function init() {
         parent::init();
         $this->url = 'https://taxon.artdatabankensoa.se/TaxonService.svc?wsdl';
