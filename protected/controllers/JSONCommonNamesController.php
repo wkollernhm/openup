@@ -58,12 +58,12 @@ class JSONCommonNamesController extends Controller {
         // check for service metadata response
         if( !isset($response['result']) ) {
             // output SKOS metadata response
-            $this->renderPartial('SKOS/metadata', array( 'response' => $response ));
+            $this->renderPartial('edmSkos/metadata', array( 'response' => $response ));
         }
         // this is a response to a query
         else {
             // output SKOS response
-            $this->renderPartial('SKOS/response', array( 'entries' => $response['result'] ));
+            $this->renderPartial('edmSkos/response', array( 'entries' => $response['result'] ));
         }
     }
     
