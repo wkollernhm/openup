@@ -15,7 +15,7 @@ foreach( $entries as $entry ) {
     if( $entry['score'] < 100 ) continue;
 ?>
   <skos:Concept rdf:about="http://openup.nhm-wien.ac.at/commonNames/<?php echo $entry['id']; ?>">
-      <skos:prefLabel xml:lang="<?php echo $entry['language']; ?>"><?php echo xml_encode($entry['name']); ?></skos:prefLabel>
+      <skos:prefLabel><?php echo xml_encode($entry['name']); ?></skos:prefLabel>
       <skos:note>common name</skos:note>
       <?php
       // check for language information
