@@ -48,7 +48,7 @@ class JSONCommonNamesController extends Controller {
      * @param type $query
      * @param type $queries
      */
-    public function actionCommonNamesSKOS($query = NULL, $queries = NULL) {
+    public function actionCommonNamesEDMSKOS($query = NULL, $queries = NULL) {
         // used result from normal JSON call and encode it in SKOS
         $response = $this->japiGetCommonNames($query, $queries);
         
@@ -117,7 +117,7 @@ class JSONCommonNamesController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // deleting
-                'actions' => array('commonNamesSKOS', 'cleanCache'),
+                'actions' => array('commonNamesEDMSKOS', 'cleanCache'),
                 'users' => array('*'),
             ),
         );
