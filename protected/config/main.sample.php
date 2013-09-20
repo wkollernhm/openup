@@ -123,8 +123,8 @@ return array(
     'params' => array(
         'adminEmail' => '',
         'nameParser' => array(
-            'address' => '',   // IP-address of nameParser service
-            'port' => 0,             // port of nameParser service
+            'address' => '127.0.0.1',   // IP-address of nameParser service
+            'port' => 4334,             // port of nameParser service
             'timeout' => 1,             // timeout in seconds
         ),
     ),

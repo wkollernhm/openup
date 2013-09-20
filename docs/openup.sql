@@ -10,7 +10,7 @@ CREATE  TABLE IF NOT EXISTS `tbl_common_names_cache` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(100) NOT NULL ,
   `language` VARCHAR(15) NULL DEFAULT NULL ,
-  `geography` VARCHAR(100) NULL DEFAULT NULL ,
+  `geography` VARCHAR(200) NULL DEFAULT NULL ,
   `period` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `commonName_UNIQUE` (`name` ASC, `language` ASC, `geography` ASC, `period` ASC) )
@@ -50,6 +50,7 @@ CREATE  TABLE IF NOT EXISTS `tbl_webservice_cache` (
   INDEX `fk_tbl_webservice_cache_tbl_service1_idx` (`service_id` ASC) ,
   INDEX `query_INDEX` (`query` ASC) ,
   INDEX `service_query_INDEX` (`query` ASC, `service_id` ASC) ,
+  INDEX `service_timestamp_INDEX` (`timestamp` ASC, `service_id` ASC) ,
   CONSTRAINT `fk_tbl_webservice_cache_tbl_service1`
     FOREIGN KEY (`service_id` )
     REFERENCES `tbl_service` (`id` )
