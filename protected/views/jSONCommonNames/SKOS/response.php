@@ -16,12 +16,36 @@ foreach( $entries as $entry ) {
 ?>
   <skos:Concept rdf:about="http://openup.nhm-wien.ac.at/commonNames/<?php echo $entry['id']; ?>">
       <skos:prefLabel xml:lang="<?php echo $entry['language']; ?>"><?php echo xml_encode($entry['name']); ?></skos:prefLabel>
-      <skos:note rdf:parseType="Literal">
-          common name
-          <br /><?php echo xml_encode(join(';', $entry['references'])); ?>
-          <br /><?php echo xml_encode($entry['geography']); ?>
-          <br /><?php echo xml_encode($entry['period']); ?>
-      </skos:note>
+      <skos:note>common name</skos:note>
+      <?php
+      // check for language information
+      if( !empty($entry['language']) ) {
+      ?>
+      <skos:note>Language: <?php echo $entry['language']; ?></skos:note>
+      <?php
+      }
+      
+      // check for references
+      if( count($entry['references']) > 0 ) {
+      ?>
+      <skos:note>Reference(s): <?php echo xml_encode(join(';', $entry['references'])); ?></skos:note>
+      <?php
+      }
+      
+      // check for geography information
+      if( !empty($entry['geography']) ) {
+      ?>
+      <skos:note>Geography: <?php echo xml_encode($entry['geography']); ?></skos:note>
+      <?php
+      }
+      
+      // check for period information
+      if( !empty($entry['period']) ) {
+      ?>
+      <skos:note>Period: <?php echo xml_encode($entry['period']); ?></skos:note>
+      <?php
+      }
+      ?>
   </skos:Concept>
 <?php
 }
