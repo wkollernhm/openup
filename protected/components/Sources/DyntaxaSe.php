@@ -34,6 +34,12 @@ class DyntaxaSe extends CachedSoapClient {
         $this->url = 'https://taxon.artdatabankensoa.se/TaxonService.svc?wsdl';
         
         $this->m_timeout = 2592000; // 30 days
+        
+        // do not cache authentication functions
+        $this->m_noCacheFunctions = array(
+            'Login',
+            'Logout'
+        );
     }
     
     /**
