@@ -45,14 +45,12 @@ class DyntaxaSe extends CachedSoapClient {
         $response = array();
         
         // login to the service
-        $WebLoginResponse = $this->Login(
-                array(
-                    'userName' => $this->userName, 
-                    'password' => $this->password, 
-                    'applicationIdentifier' => $this->applicationIdentifier,
-                    'isActivationRequired' => $this->isActivationRequired
-                )
-        );
+        $WebLoginResponse = $this->Login(array(
+            'userName' => $this->userName, 
+            'password' => $this->password, 
+            'applicationIdentifier' => $this->applicationIdentifier,
+            'isActivationRequired' => $this->isActivationRequired
+        ));
         $WebLoginResponse = $WebLoginResponse->LoginResult;
         
         // construct internal webclient information object
@@ -62,12 +60,21 @@ class DyntaxaSe extends CachedSoapClient {
             'Token' => $WebLoginResponse->Token
         );
         
-        // Logout after calling the service
-        $this->Logout(
-                array(
-                    'clientInformation' => $WebClientInformation
-                )
+        // construct WebTaxonSearchCriteria object
+        $WebTaxonSearchCriteria = array(
+            'TaxonNameSearchString' => $term,
+            'Scope' => 'NoScope',
         );
+        
+        $WebTaxons = $this->GetTaxaBySearchCriteria(array(
+            'clientInformation' => $WebClientInformation,
+            'searchCriteria' => $WebTaxonSearchCriteria
+        ));
+        
+        // Logout after calling the service
+        $this->Logout(array(
+            'clientInformation' => $WebClientInformation
+        ));
         
         return $response;
     }
