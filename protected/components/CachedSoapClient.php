@@ -20,12 +20,24 @@ abstract class CachedSoapClient extends WSComponent {
     private $m_soapClient = null;
     
     /**
+     * Soap Version to use for the client
+     * @var string
+     */
+    protected $m_soapVersion = SOAP_1_1;
+    
+    /**
      * Internal helper function which returns a "real" SoapClient object
      * @return SoapClient 
      */
     private function SoapClient() {
         if( $this->m_soapClient == null ) {
-            $this->m_soapClient = new SoapClient( $this->url, array('trace' => true) );
+            $this->m_soapClient = new SoapClient(
+                    $this->url,
+                    array(
+                        'trace' => true,
+                        'soap_version' => $this->m_soapVersion
+                    )
+            );
         }
         
         return $this->m_soapClient;
