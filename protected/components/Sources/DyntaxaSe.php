@@ -49,7 +49,7 @@ class DyntaxaSe extends CachedSoapClient {
             'userName' => $this->userName, 
             'password' => $this->password, 
             'applicationIdentifier' => $this->applicationIdentifier,
-            'isActivationRequired' => $this->isActivationRequired
+            'isActivationRequired' => $this->isActivationRequired,
         ));
         $WebLoginResponse = $WebLoginResponse->LoginResult;
         
@@ -57,25 +57,59 @@ class DyntaxaSe extends CachedSoapClient {
         $WebClientInformation = array(
             'Locale' => $WebLoginResponse->Locale,
             'Role' => NULL,
-            'Token' => $WebLoginResponse->Token
+            'Token' => $WebLoginResponse->Token,
+        );
+        
+        // construct WebStringSearchCriteria object
+        $WebStringSearchCriteria = array(
+            'SearchString' => $term,
+            'CompareOperators' => array(
+                'Like',
+            ),
         );
         
         // construct WebTaxonSearchCriteria object
         $WebTaxonSearchCriteria = array(
-            'TaxonNameSearchString' => $term,
-            'Scope' => 'NoScope',
+            'TaxonNameSearchString' => $WebStringSearchCriteria,
         );
         
+        // query service for taxa by this name
         $WebTaxons = $this->GetTaxaBySearchCriteria(array(
             'clientInformation' => $WebClientInformation,
-            'searchCriteria' => $WebTaxonSearchCriteria
+            'searchCriteria' => $WebTaxonSearchCriteria,
         ));
+        $WebTaxons = $WebTaxons->GetTaxaBySearchCriteriaResult;
+        
+        // check if we have some results
+        if( isset($WebTaxons->WebTaxon) ) {
+            $WebTaxons = $WebTaxons->WebTaxon;
+            
+            // make sure result is in array form (it's no array if only a single match is found)
+            if( !is_array($WebTaxons) ) {
+                $WebTaxons = array($WebTaxons);
+            }
+            
+            // iterate over results and add them to response
+            foreach($WebTaxons as $WebTaxon) {
+                $response[] = array(
+                    "name" => $WebTaxon->CommonName,
+                    "language" => 'swe',
+                    'geography' => NULL,
+                    'period' => NULL,
+                    "score" => 100,
+                    "match" => true,
+                    "references" => array('dyntaxa.se'),
+                    "taxon" => $WebTaxon->ScientificName,
+                );
+            }
+        }
         
         // Logout after calling the service
         $this->Logout(array(
-            'clientInformation' => $WebClientInformation
+            'clientInformation' => $WebClientInformation,
         ));
         
+        // finally return the response
         return $response;
     }
 }
