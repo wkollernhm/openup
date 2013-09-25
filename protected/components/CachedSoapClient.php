@@ -75,6 +75,7 @@ abstract class CachedSoapClient extends WSComponent {
             if( $this->m_soapClient != NULL ) {
                 error_log($this->m_soapClient->__getLastRequestHeaders());
                 error_log($this->m_soapClient->__getLastRequest());
+                error_log($this->m_soapClient->__getLastResponse());
             }
             
             return null;
