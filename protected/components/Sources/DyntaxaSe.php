@@ -104,7 +104,7 @@ class DyntaxaSe extends CachedSoapClient {
                     'period' => NULL,
                     "score" => 100,
                     "match" => true,
-                    "references" => array('dyntaxa.se'),
+                    "references" => array('Dyntaxa (' . date('Y') . ') Swedish Taxonomic Database. Accessed at https://www.dyntaxa.se/dyntaxa/taxon/info/' . $WebTaxon->Id . ' at [' . date('Y-m-d') . ']'),
                     "taxon" => $WebTaxon->ScientificName,
                 );
             }
