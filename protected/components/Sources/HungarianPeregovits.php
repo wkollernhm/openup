@@ -21,6 +21,9 @@ class HungarianPeregovits extends SourceComponent {
 
             // cycle through results and add them to the response
             foreach($models_sourceHungarianPeregovits as $model_sourceHungarianPeregovits) {
+                // load literature data
+                $model_sourceHungarianPeregovitsLiterature = SourceHungarianPeregovitsLiterature::model()->findByPk($model_sourceHungarianPeregovits->PUB_ID);
+                
                 // construct response data
                 $response[] = array(
                     "name" => $model_sourceHungarianPeregovits->HU_Common_name,
@@ -28,7 +31,7 @@ class HungarianPeregovits extends SourceComponent {
                     "geography" => NULL,
                     "period" => $model_sourceHungarianPeregovits->Period,
                     "taxon" => $termParsed['canonical'],
-                    "references" => array(),
+                    "references" => array($model_sourceHungarianPeregovitsLiterature->citation),
                     "score" => 100,
                     "match" => true,
                 );
