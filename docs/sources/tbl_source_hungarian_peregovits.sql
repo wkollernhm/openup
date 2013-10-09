@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 08. Okt 2013 um 10:39
--- Server Version: 5.5.32
+-- Erstellungszeit: 09. Okt 2013 um 06:32
+-- Server Version: 5.5.33
 -- PHP-Version: 5.3.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `tbl_source_hungarian_peregovits_literature` (
   `Publisher_city` varchar(100) DEFAULT NULL,
   `edition` varchar(10) DEFAULT NULL,
   `ISBN` varchar(25) DEFAULT NULL,
-  `pages` int(5) DEFAULT NULL,
+  `pages` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`PUB_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
