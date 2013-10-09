@@ -27,7 +27,7 @@ class NewZealandLandcare extends SourceComponent {
             }
 
             // parse the returned name and compare it to the actual query term, in order to only return 100% matches
-            $nameFull = Yii::app()->NameParser->parse($model_newZealandLandcare->NameFull);
+            $nameFull = Yii::app()->NameParser->clean($model_newZealandLandcare->NameFull);
             if( $nameFull != $term ) continue;
 
             // construct response data

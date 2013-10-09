@@ -41,15 +41,31 @@ class NameParser extends CComponent {
     }
     
     /**
-     * Parse a given name by using the nameParser service
+     * Clean (remove authors or other components) a given name by using the nameParser service
      * @param string $name
      * @return string
+     */
+    public function clean($name) {
+        // try to parse the name
+        $response = $this->parse($name);
+        
+        // return canonical form if available
+        if( $response != NULL ) return $response['canonical'];
+        
+        // by default return the input name
+        return $name;
+    }
+
+    /**
+     * Send a name to the nameParser service and parse the result
+     * @param string $name Name string to parse
+     * @return array|null Parsed information or NULL if error/not available
      */
     public function parse($name) {
         // only ask service if connected
         if( $this->m_connected ) {
             // prepare query for service
-            $query = $name . "\n";
+            $query = trim($name) . "\n";
 
             // Send the query to the nameParser service
             socket_write($this->m_socket, $query);
@@ -63,12 +79,12 @@ class NameParser extends CComponent {
             ) {
                 // check if name was successfully parsed
                 if( $response['scientificName']['parsed'] == true ) {
-                    $name = $response['scientificName']['canonical'];
+                    return $response['scientificName'];
                 }
             }
         }
         
-        // return the name
-        return $name;
+        // return NULL if parsing is not possible
+        return NULL;
     }
 }

@@ -47,7 +47,7 @@ abstract class SourceComponent extends CComponent {
         $response = array();
 
         // parse the name before sending it to the services
-        $term = Yii::app()->NameParser->parse($term);
+        $term = Yii::app()->NameParser->clean($term);
 
         // ask all sources
         $sources = SourceComponent::getSources();
@@ -109,7 +109,7 @@ abstract class SourceComponent extends CComponent {
             }
             
             // clean the scientific name
-            $result['taxon'] = Yii::app()->NameParser->parse($result['taxon']);
+            $result['taxon'] = Yii::app()->NameParser->clean($result['taxon']);
             
             // find the scientific name
             $model_scientificName = ScientificNameCache::model()->findByAttributes(array(
