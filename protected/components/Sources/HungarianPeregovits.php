@@ -13,17 +13,39 @@ class HungarianPeregovits extends SourceComponent {
         if( $termParsed != NULL ) {
             $termDetails = $termParsed['details'][0];
             
-            // find all fitting scientific name entries
-            $models_sourceHungarianPeregovits = SourceHungarianPeregovits::model()->findAllByAttributes(array(
-                'Genus' => $termDetails['genus'],
-                'species' => $termDetails['species'],
-            ));
+            $models_sourceHungarianPeregovits = array();
+            
+            // search for all species entries with the given binomial
+            if( isset($termDetails['genus']) && isset($termDetails['species']) ) {
+                // find all fitting scientific name entries
+                $models_sourceHungarianPeregovits = SourceHungarianPeregovits::model()->findAllByAttributes(array(
+                    'Genus' => $termDetails['genus']['string'],
+                    'species' => $termDetails['species']['string'],
+                ));
+            }
+            // search for an uninomial entry
+            else if( isset($termDetails['uninomial']) ) {
+                // search for all families or genus entries
+                $dbCriteria = new CDbCriteria();
+                $dbCriteria->addColumnCondition(array(
+                    'Family' => $termDetails['uninomial']['string'],
+                    'Genus' => '',
+                    'species' => '',
+                ), 'AND', 'OR');
+                $dbCriteria->addColumnCondition(array(
+                    'Genus' => $termDetails['uninomial']['string'],
+                    'species' => '',
+                ), 'AND', 'OR');
+                
+                // finally execute the search
+                $models_sourceHungarianPeregovits = SourceHungarianPeregovits::model()->findAll($dbCriteria);
+            }
 
             // cycle through results and add them to the response
             foreach($models_sourceHungarianPeregovits as $model_sourceHungarianPeregovits) {
-                // load literature data
-                $model_sourceHungarianPeregovitsLiterature = SourceHungarianPeregovitsLiterature::model()->findByPk($model_sourceHungarianPeregovits->PUB_ID);
-                
+                // only return entries with a valid literature reference
+                if( $model_sourceHungarianPeregovits->pUB == NULL ) continue;
+
                 // construct response data
                 $response[] = array(
                     "name" => $model_sourceHungarianPeregovits->HU_Common_name,
@@ -31,7 +53,7 @@ class HungarianPeregovits extends SourceComponent {
                     "geography" => NULL,
                     "period" => $model_sourceHungarianPeregovits->Period,
                     "taxon" => $termParsed['canonical'],
-                    "references" => array($model_sourceHungarianPeregovitsLiterature->citation),
+                    "references" => array($model_sourceHungarianPeregovits->pUB->citation),
                     "score" => 100,
                     "match" => true,
                 );
