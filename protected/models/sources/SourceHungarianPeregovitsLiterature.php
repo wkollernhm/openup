@@ -26,6 +26,17 @@ class SourceHungarianPeregovitsLiterature extends CActiveRecord {
      * @return string
      */
     public function getCitation() {
+        $citation = $this->Authors . " (" . $this->Year . ")";
+        
+        if( strlen($this->Series_journal_title) > 0 ) {
+            $citation .= " " . $this->Series_journal_title;
+        }
+        if( strlen($this->volume_no) > 0 ) {
+            $citation .= " " . $this->volume_no;
+        }
+        $citation .= ": " . $this->pages;
+        
+        
         return $this->Title;
     }
 
