@@ -14,7 +14,7 @@ class ETIDatabases extends SourceComponent {
         
         foreach( $models_sourceEtiDatabases as $model_sourceEtiDatabases ) {
             // return a clean taxon name
-            $taxon = Yii::app()->NameParser->parse($model_sourceEtiDatabases->Taxon);
+            $taxon = Yii::app()->NameParser->clean($model_sourceEtiDatabases->Taxon);
             // prevent sub-matches (e.g. species instead of genus)
             if( $taxon != $term ) continue;
             

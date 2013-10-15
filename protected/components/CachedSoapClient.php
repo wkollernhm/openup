@@ -20,12 +20,30 @@ abstract class CachedSoapClient extends WSComponent {
     private $m_soapClient = null;
     
     /**
+     * Soap Version to use for the client
+     * @var string
+     */
+    protected $m_soapVersion = SOAP_1_1;
+    
+    /**
+     * A list of function (names) which should not be cached
+     * @var array
+     */
+    protected $m_noCacheFunctions = array();
+    
+    /**
      * Internal helper function which returns a "real" SoapClient object
      * @return SoapClient 
      */
     private function SoapClient() {
         if( $this->m_soapClient == null ) {
-            $this->m_soapClient = new SoapClient( $this->url, array('trace' => true) );
+            $this->m_soapClient = new SoapClient(
+                    $this->url,
+                    array(
+                        'trace' => true,
+                        'soap_version' => $this->m_soapVersion
+                    )
+            );
         }
         
         return $this->m_soapClient;
@@ -50,11 +68,18 @@ abstract class CachedSoapClient extends WSComponent {
             }
             // This is a WSDL defined function, which means we can check the cache for it
             else {
-                // construct query string
-                $query = array($name,$arguments);
-
-                // check for cached result
-                $response = $this->getCachedResponse($query);
+                $response = NULL;
+                $bCache = !in_array($name, $this->m_noCacheFunctions);  // check if function should be cached
+                
+                // check if function should not be cached
+                if( $bCache ) {
+                    // construct query string
+                    $query = array($name,$arguments);
+                    // check for cached result
+                    $response = $this->getCachedResponse($query);
+                }
+                
+                // check if a cached response was found
                 if( $response != null ) {
                     return $response;
                 }
@@ -63,7 +88,7 @@ abstract class CachedSoapClient extends WSComponent {
                     $response = call_user_func_array( array( $this->SoapClient(), $name ), $arguments );
 
                     // cache the response
-                    $this->setCachedResponse($query, $response);
+                    if( $bCache) $this->setCachedResponse($query, $response);
 
                     return $response;
                 }
@@ -75,6 +100,7 @@ abstract class CachedSoapClient extends WSComponent {
             if( $this->m_soapClient != NULL ) {
                 error_log($this->m_soapClient->__getLastRequestHeaders());
                 error_log($this->m_soapClient->__getLastRequest());
+                error_log($this->m_soapClient->__getLastResponse());
             }
             
             return null;
