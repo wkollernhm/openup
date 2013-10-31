@@ -20,8 +20,8 @@ class JSONCommonNamesController extends Controller {
         // check if we received no request
         if( $query == NULL && $queries == NULL ) {
             $return['name'] = 'OpenUp! Common Names Service';
-            $return['identifierSpace'] = 'http://open-up.eu/commonNames/';
-            $return['schemaSpace'] = 'http://open-up.eu/commonNames/';
+            $return['identifierSpace'] = 'http://openup.nhm-wien.ac.at/commonNames/';
+            $return['schemaSpace'] = 'http://openup.nhm-wien.ac.at/commonNames/';
             unset($return['result']);
         }
         // check for single query mode
