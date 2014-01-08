@@ -39,7 +39,7 @@ class PESI extends CachedSoapClient {
                         'period' => NULL,
                         "score" => 100,
                         "match" => true,
-                        "references" => array('pesi'),
+                        "references" => array('PESI (2014). Pan-European Species directories Infrastructure. Accessed through www.eu-nomen.eu/portal, at ' . date('Y-m-d') ),
                         "taxon" => $record->scientificname,
                     );
                 }
