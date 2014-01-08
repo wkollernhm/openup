@@ -8,7 +8,7 @@ class COL extends CachedRESTClient {
     public function init() {
         parent::init();
 
-        $this->url = "http://webservice.catalogueoflife.org/webservice?response=full&format=php&name=";
+        $this->url = "http://www.catalogueoflife.org/col/webservice?response=full&format=php&name=";
         $this->m_timeout = 2592000; // 30 days
     }
     
