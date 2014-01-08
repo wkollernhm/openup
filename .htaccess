@@ -4,12 +4,12 @@ RewriteEngine Off
 # send all requests which include the SKOS format selector to the SKOS routine
 RewriteCond %{QUERY_STRING}  format=edmSkos
 RewriteCond %{QUERY_STRING}  (query|queries)=(.*)
-RewriteRule index.php        index.php?r=jSONCommonNames/commonNamesEDMSKOS&%1=%2 [L]
+RewriteRule index.php        index.php?r=commonNames/commonNamesEDMSKOS&%1=%2 [L]
 
 # send all requests which contain query or queries to webservice
 RewriteCond %{QUERY_STRING}  (query|queries)=(.*)
-RewriteRule index.php        index.php?r=jSONCommonNames/japi&action=getCommonNames&%1=%2 [L]
+RewriteRule index.php        index.php?r=commonNames/japi&action=getCommonNames&%1=%2 [L]
 
 # send all empty requests to common names webservice
 RewriteCond %{QUERY_STRING}  ^$
-RewriteRule index.php        index.php?r=jSONCommonNames/japi&action=getCommonNames [L]
+RewriteRule index.php        index.php?r=commonNames/japi&action=getCommonNames [L]

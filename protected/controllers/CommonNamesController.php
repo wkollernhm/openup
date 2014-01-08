@@ -1,9 +1,9 @@
 <?php
 /**
- * JSON Controller for handling requests to the common names webservice
+ * Controller for handling requests to the common names webservice
  * For details on the actual service see http://open-up.eu/content/common-names-service
  */
-class JSONCommonNamesController extends Controller {
+class CommonNamesController extends Controller {
     /**
      * Main entry function for querying for common names using the Reconciliation API
      * @param array $query
