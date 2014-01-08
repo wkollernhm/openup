@@ -45,6 +45,11 @@ foreach( $entries as $entry ) {
       <skos:note>Period: <?php echo xml_encode($entry['period']); ?></skos:note>
       <?php
       }
+      
+      // provide link to references page
+      ?>
+      <skos:editorialNote><?php echo xml_encode(Yii::app()->getRequest()->getBaseUrl(true) . '/references/scientificName/' . $entry['taxon_id']); ?></skos:editorialNote>
+      <?php
       ?>
   </skos:Concept>
 <?php
