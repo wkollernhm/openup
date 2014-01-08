@@ -6,6 +6,13 @@ foreach( $commonName_results as $commonName_result ) {
     ?>
     <p>
         <b><?php echo CHtml::encode($commonName_result['name']); ?></b>
+        <?php
+        if( !empty($commonName_result['language']) ) {
+            ?>
+            <i><?php echo CHtml::encode($commonName_result['language']); ?></i>
+            <?php
+        }
+        ?>
         
         <ul>
             <?php

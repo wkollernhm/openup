@@ -135,7 +135,7 @@ class CommonNamesController extends Controller {
             array(
                 'CHttpCache',
                 'duration' => 86400,
-                'varyByParam' => array('query', 'queries', 'noCache'),
+                'varyByParam' => array('query', 'queries', 'noCache', 'scientific_name_id'),
             ),
         );
     }
