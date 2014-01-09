@@ -14,7 +14,7 @@ foreach( $entries as $entry ) {
     // only display 100% matches for Europeana
     if( $entry['score'] < 100 ) continue;
 ?>
-  <skos:Concept rdf:about="http://openup.nhm-wien.ac.at/commonNames/<?php echo $entry['id']; ?>">
+  <skos:Concept rdf:about="<?php echo xml_encode(Yii::app()->getRequest()->getBaseUrl(true) . '/' . $entry['id']); ?>">
       <skos:prefLabel><?php echo xml_encode($entry['name']); ?></skos:prefLabel>
       <skos:note>common name</skos:note>
       <?php
@@ -45,6 +45,11 @@ foreach( $entries as $entry ) {
       <skos:note>Period: <?php echo xml_encode($entry['period']); ?></skos:note>
       <?php
       }
+      
+      // provide link to references page
+      ?>
+      <skos:editorialNote><?php echo xml_encode(Yii::app()->getRequest()->getBaseUrl(true) . '/references/scientificName/' . $entry['taxon_id']); ?></skos:editorialNote>
+      <?php
       ?>
   </skos:Concept>
 <?php

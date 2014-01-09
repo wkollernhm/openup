@@ -132,6 +132,7 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         'adminEmail' => '',
+        // GNA nameParser settings (run: "parserver -r -o json")
         'nameParser' => array(
             'address' => '127.0.0.1',   // IP-address of nameParser service
             'port' => 4334,             // port of nameParser service

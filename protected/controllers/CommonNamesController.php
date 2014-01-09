@@ -1,9 +1,9 @@
 <?php
 /**
- * JSON Controller for handling requests to the common names webservice
+ * Controller for handling requests to the common names webservice
  * For details on the actual service see http://open-up.eu/content/common-names-service
  */
-class JSONCommonNamesController extends Controller {
+class CommonNamesController extends Controller {
     /**
      * Main entry function for querying for common names using the Reconciliation API
      * @param array $query
@@ -20,8 +20,8 @@ class JSONCommonNamesController extends Controller {
         // check if we received no request
         if( $query == NULL && $queries == NULL ) {
             $return['name'] = 'OpenUp! Common Names Service';
-            $return['identifierSpace'] = 'http://open-up.eu/commonNames/';
-            $return['schemaSpace'] = 'http://open-up.eu/commonNames/';
+            $return['identifierSpace'] = 'http://openup.nhm-wien.ac.at/commonNames/';
+            $return['schemaSpace'] = 'http://openup.nhm-wien.ac.at/commonNames/';
             unset($return['result']);
         }
         // check for single query mode
@@ -77,6 +77,32 @@ class JSONCommonNamesController extends Controller {
     }
     
     /**
+     * Render an HTML page which displays all common names and their references for a given scientific name id
+     * @param int $scientific_name_id
+     */
+    public function actionShowReferencesForScientificName($scientific_name_id) {
+        $scientific_name_id = intval($scientific_name_id);
+        if( $scientific_name_id <= 0 ) {
+            die('Invalid scientific name id passed - please check your input!');
+        }
+        
+        // fetch the actual scientific name
+        $model_scientificNameCache = ScientificNameCache::model()->findByPk($scientific_name_id);
+        if( $model_scientificNameCache == NULL ) {
+            die('Scientific name not found - make sure you provide a valid id!');
+        }
+        
+        // now query all sources for the name
+        $commonName_results = SourceComponent::querySources($model_scientificNameCache->name);
+        
+        // render the references page
+        $this->render('referencesForScientificName', array(
+            'model_scientificNameCache' => $model_scientificNameCache,
+            'commonName_results' => $commonName_results,
+        ));
+    }
+    
+    /**
      * handle a single query and return the result
      * @param string $query Query as JSON-String
      * @return array response according to webservice specification
@@ -109,7 +135,7 @@ class JSONCommonNamesController extends Controller {
             array(
                 'CHttpCache',
                 'duration' => 86400,
-                'varyByParam' => array('query', 'queries', 'noCache'),
+                'varyByParam' => array('query', 'queries', 'noCache', 'scientific_name_id'),
             ),
         );
     }
@@ -117,7 +143,7 @@ class JSONCommonNamesController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // deleting
-                'actions' => array('commonNamesEDMSKOS', 'cleanCache'),
+                'actions' => array('commonNamesEDMSKOS', 'cleanCache', 'showReferencesForScientificName'),
                 'users' => array('*'),
             ),
         );

@@ -61,7 +61,7 @@ class LuomusFi extends CachedRESTClient {
                         'geography' => NULL,
                         'period' => NULL,
                         "taxon" => $scientificName,
-                        "references" => array('luomus.fi'),
+                        "references" => array('luomus.fi - Finnish Museum of Natural History'),
                         "score" => 100.0,
                         "match" => true,
                     );
