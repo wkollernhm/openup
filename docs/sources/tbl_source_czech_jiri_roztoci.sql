@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2014 at 11:50 AM
+-- Generation Time: Jan 22, 2014 at 12:44 PM
 -- Server version: 5.5.33
 -- PHP Version: 5.3.17
 
@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `tbl_source_czech_jiri_roztoci` (
   `latin_name` varchar(150) NOT NULL,
   `czech_name` varchar(150) NOT NULL,
-  `synonym` varchar(150) NOT NULL,
+  `first_synonym` varchar(150) NOT NULL,
+  `second_synonym` varchar(150) NOT NULL,
   KEY `latin_name` (`latin_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

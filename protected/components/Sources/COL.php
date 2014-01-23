@@ -34,6 +34,7 @@ class COL extends CachedRESTClient {
                         foreach( $result['common_names'] as $common_name ) {
                             // check for invalid characters in CoL result, if found ignore result
                             if( strpos($common_name['name'], "?") !== FALSE ) continue;
+                            if( strpos($common_name['name'], "Ã") !== FALSE ) continue;
                             
                             // extract references & add them as string array
                             $references = array('Bisby F., Roskov Y., Culham A., Orrell T., Nicolson D., Paglinawan L., Bailly N., Kirk P., Bourgoin T., Baillargeon G., Hernandez F., De Wever A., Kunze T., eds (2013). Species 2000 & ITIS Catalogue of Life, 8th February 2013. Digital resource at www.catalogueoflife.org/col/. Species 2000: Reading, UK.');
