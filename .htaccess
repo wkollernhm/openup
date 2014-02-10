@@ -1,8 +1,11 @@
 # enable rewrite engine
-RewriteEngine Off
+RewriteEngine On
 
 # check for references request
-RewriteRule references/scientificName/(\d+) index.php?r=commonNames/showReferencesForScientificName&scientific_name_id=$1
+RewriteRule references/scientificName/(\d+) index.php?r=commonNames/showReferencesForScientificName&scientific_name_id=$1 [L]
+
+# check for common names requests by id
+RewriteRule (\d+) index.php?r=commonNames/commonNameEDMSKOS&common_name_id=$1 [L]
 
 # send all requests which include the SKOS format selector to the SKOS routine
 RewriteCond %{QUERY_STRING}  format=edmSkos

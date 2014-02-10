@@ -67,6 +67,18 @@ class CommonNamesController extends Controller {
         }
     }
     
+    public function actionCommonNameEDMSKOS($common_name_id) {
+        // Send correct XML header
+        header('Content-Type: application/xml');
+        
+        // load common name information
+        $model_commonName = CommonNamesCache::model()->findByPk($common_name_id);
+        if( $model_commonName == NULL ) return;
+        
+        // output EDM-SKOS response for single common name
+        $this->renderPartial('edmSkos/commonName', array( 'model_commonName' => $model_commonName ) );
+    }
+    
     /**
      * Helper action for cleaning the cache
      */
@@ -143,7 +155,7 @@ class CommonNamesController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // deleting
-                'actions' => array('commonNamesEDMSKOS', 'cleanCache', 'showReferencesForScientificName'),
+                'actions' => array('commonNamesEDMSKOS', 'commonNameEDMSKOS', 'cleanCache', 'showReferencesForScientificName'),
                 'users' => array('*'),
             ),
         );
