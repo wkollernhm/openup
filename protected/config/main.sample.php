@@ -9,7 +9,7 @@ return array(
     'name' => 'OpenUp! Common Names Webservice',
     // preloading 'log' component
     'preload' => array(
-            'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'wboeOeaw', 'SlovakBratislava', 'LuomusFi', 'HebrewLinda', 'RussianPlantarium', 'ETIDatabases', 'LinnaeusProjects', 'DyntaxaSe', 'HungarianPeregovits', 'UkrainianKobiv', 'CzechJiri',
+            'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'wboeOeaw', 'SlovakBratislava', 'LuomusFi', 'HebrewLinda', 'RussianPlantarium', 'ETIDatabases', 'LinnaeusProjects', 'DyntaxaSe', 'HungarianPeregovits', 'UkrainianKobiv', 'CzechJiri', 'TogoDb',
             'log', 'NameParser', 'NHMWService'
         ),
     // autoloading model and component classes
@@ -128,6 +128,9 @@ return array(
         ),
         'CzechJiri' => array(
             'class' => 'CzechJiri'
+        ),
+        'TogoDb' => array(
+            'class' => 'TogoDb'
         ),
 
         'NameParser' => array(
