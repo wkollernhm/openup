@@ -45,20 +45,30 @@ abstract class SourceComponent extends CComponent {
      */
     public static function querySources($term) {
         $response = array();
+        
+        Yii::trace("[" . microtime(true) . "]" . "SourceComponent.querySources");
 
         // parse the name before sending it to the services
+        Yii::trace("[" . microtime(true) . "]" . "SourceComponent.clean");
         $term = Yii::app()->NameParser->clean($term);
+        Yii::trace("[" . microtime(true) . "]" . "SourceComponent.clean done.");
 
         // ask all sources
         $sources = SourceComponent::getSources();
         foreach ($sources as $source) {
+            $query_start = microtime(true);
+            Yii::trace("[" . $query_start . "]" . "SourceComponent.query." . get_class($source));
             $sourceResponse = $source->query($term);
 
             // check for valid response
             if( is_array($sourceResponse) ) {
                 $response = array_merge($response, $sourceResponse);
             }
+            $query_end = microtime(true);
+            Yii::trace("[" . $query_end . "]" . "SourceComponent.query." . get_class($source) . " done. (" . ($query_end - $query_start) . ")");
         }
+
+        Yii::trace("[" . microtime(true) . "]" . "SourceComponent.querySources done.");
 
         // deduplicate response before returning it
         return SourceComponent::deduplicateResponse($response);
