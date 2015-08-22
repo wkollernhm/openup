@@ -28,9 +28,9 @@ class Pland extends CachedRESTClient {
         if ($results != null && is_array($results) && isset($results[$term]) && is_array($results[$term])) {
             foreach ($results[$term] as $result) {
                 // check for an exact match
-                $score = (strcasecmp($result['botanische_naam'], $term) == 0) ? 100 : NULL;
+                $score = (strcasecmp($result['botanische_naam'], $term) == 0) ? 100 : 0;
                 $match = ($score == 100) ? true : false;
-                
+
                 // add main entry (nl_naam) first
                 $response[] = array(
                     "name" => $result['nl_naam'],
@@ -63,4 +63,25 @@ class Pland extends CachedRESTClient {
 
         return $response;
     }
+
+    /**
+     * Get the resposne from a REST based service
+     * @param string $query Query to send to the REST service (appended to URL)
+     * @return mixed Response of service
+     */
+    protected function getResponse($query) {
+        // urlencode query by default
+        $query = urlencode($query);
+
+        // check for cached response of this query
+        $response = mb_convert_encoding($this->getCachedResponse($query), "UTF-8", "Windows-1252");
+        if ($response == null) {
+            // fetch the response from the rest service
+            $response = file_get_contents($this->url . $query);
+            $this->setCachedResponse($query, mb_convert_encoding($response, "Windows-1252", "UTF-8"));
+        }
+
+        return $response;
+    }
+
 }
