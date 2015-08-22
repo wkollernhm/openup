@@ -12,6 +12,7 @@ class Pland extends CachedRESTClient {
 
         $this->url = "http://www.meertens.knaw.nl/pland/rest/?format=php&plantnaam=";
         $this->m_timeout = 2592000; // 30 days
+        $this->sourceEncoding = "Windows-1252";
     }
 
     /**
@@ -22,15 +23,16 @@ class Pland extends CachedRESTClient {
     public function query($term) {
         $response = array();
 
-        $results = unserialize($this->getResponse($term));
+        $results = $this->transcode_results(unserialize($this->getResponse($term)));
 
         // check for valid response
         if ($results != null && is_array($results) && isset($results[$term]) && is_array($results[$term])) {
             foreach ($results[$term] as $result) {
                 // check for an exact match
-                $score = (strcasecmp($result['botanische_naam'], $term) == 0) ? 100 : NULL;
+                $botanische_naam = Yii::app()->NameParser->clean($result['botanische_naam']);
+                $score = (strcasecmp($botanische_naam, $term) == 0) ? 100 : 0;
                 $match = ($score == 100) ? true : false;
-                
+
                 // add main entry (nl_naam) first
                 $response[] = array(
                     "name" => $result['nl_naam'],

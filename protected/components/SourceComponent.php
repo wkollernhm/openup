@@ -1,21 +1,23 @@
 <?php
+
 /**
  * Generic parent class for handling sources of common names
  *
  * @author wkoller
  */
 abstract class SourceComponent extends CComponent {
+
     /**
      * can be set to prevent this component from registering automatically
      * @var boolean 
      */
     protected $m_noRegister = false;
-    
+
     /**
      * @var array array of registered source components
      */
     private static $m_sourceComponents = array();
-    
+
     /**
      * Return all registered webservice components
      * @return array
@@ -23,12 +25,13 @@ abstract class SourceComponent extends CComponent {
     public static function getSources() {
         return SourceComponent::$m_sourceComponents;
     }
-    
+
     /**
      * keep reference when initializing
      */
     public function init() {
-        if( !$this->m_noRegister ) SourceComponent::$m_sourceComponents[] = $this;
+        if (!$this->m_noRegister)
+            SourceComponent::$m_sourceComponents[] = $this;
     }
 
     /**
@@ -37,7 +40,7 @@ abstract class SourceComponent extends CComponent {
      * @return array Structured response information
      */
     protected abstract function query($term);
-    
+
     /**
      * Query all registered sources, deduplicate them and return the result
      * @param string $term scientific name to search for
@@ -45,7 +48,7 @@ abstract class SourceComponent extends CComponent {
      */
     public static function querySources($term) {
         $response = array();
-        
+
         Yii::trace("[" . microtime(true) . "]" . "SourceComponent.querySources");
 
         // parse the name before sending it to the services
@@ -56,16 +59,20 @@ abstract class SourceComponent extends CComponent {
         // ask all sources
         $sources = SourceComponent::getSources();
         foreach ($sources as $source) {
-            $query_start = microtime(true);
-            Yii::trace("[" . $query_start . "]" . "SourceComponent.query." . get_class($source));
-            $sourceResponse = $source->query($term);
+            try {
+                $query_start = microtime(true);
+                Yii::trace("[" . $query_start . "]" . "SourceComponent.query." . get_class($source));
+                $sourceResponse = $source->query($term);
 
-            // check for valid response
-            if( is_array($sourceResponse) ) {
-                $response = array_merge($response, $sourceResponse);
+                // check for valid response
+                if (is_array($sourceResponse)) {
+                    $response = array_merge($response, $sourceResponse);
+                }
+                $query_end = microtime(true);
+                Yii::trace("[" . $query_end . "]" . "SourceComponent.query." . get_class($source) . " done. (" . ($query_end - $query_start) . ")");
+            } catch (Exception $e) {
+                error_log($e->getMessage());
             }
-            $query_end = microtime(true);
-            Yii::trace("[" . $query_end . "]" . "SourceComponent.query." . get_class($source) . " done. (" . ($query_end - $query_start) . ")");
         }
 
         Yii::trace("[" . microtime(true) . "]" . "SourceComponent.querySources done.");
@@ -73,7 +80,7 @@ abstract class SourceComponent extends CComponent {
         // deduplicate response before returning it
         return SourceComponent::deduplicateResponse($response);
     }
-    
+
     /**
      * Clean the cache for all service entries
      */
@@ -82,7 +89,7 @@ abstract class SourceComponent extends CComponent {
         $sources = SourceComponent::getSources();
         foreach ($sources as $source) {
             // only webservice components use the cache
-            if( is_subclass_of($source, 'WSComponent') ) {
+            if (is_subclass_of($source, 'WSComponent')) {
                 $source->cleanCache();
             }
         }
@@ -95,9 +102,9 @@ abstract class SourceComponent extends CComponent {
      */
     private static function deduplicateResponse($response) {
         $dedupResponse = array();
-        
+
         // handle each result and deduplicate it
-        foreach($response as $result) {
+        foreach ($response as $result) {
             // try to find cached version of common name
             $model_commonNamesCache = CommonNamesCache::model()->findByAttributes(array(
                 'name' => $result['name'],
@@ -106,43 +113,41 @@ abstract class SourceComponent extends CComponent {
                 'period' => $result['period'],
             ));
             // if this name wasn't cached yet, create it
-            if( $model_commonNamesCache == NULL ) {
+            if ($model_commonNamesCache == NULL) {
                 $model_commonNamesCache = new CommonNamesCache();
                 $model_commonNamesCache->name = $result['name'];
                 $model_commonNamesCache->language = $result['language'];
                 $model_commonNamesCache->geography = $result['geography'];
                 $model_commonNamesCache->period = $result['period'];
                 // check if saving the cached entry worked
-                if( !$model_commonNamesCache->save() ) {
+                if (!$model_commonNamesCache->save()) {
                     continue;
                 }
             }
-            
+
             // clean the scientific name
             $result['taxon'] = Yii::app()->NameParser->clean($result['taxon']);
-            
+
             // find the scientific name
             $model_scientificName = ScientificNameCache::model()->findByAttributes(array(
                 'name' => $result['taxon']
             ));
             // create cached scientific name if it doesn't exist yet
-            if( $model_scientificName == NULL ) {
+            if ($model_scientificName == NULL) {
                 $model_scientificName = new ScientificNameCache();
                 $model_scientificName->name = $result['taxon'];
                 // check if saving the cached entry worked
-                if( !$model_scientificName->save() ) {
+                if (!$model_scientificName->save()) {
                     continue;
                 }
             }
-            
+
             // check if this common name already exists in results
-            if( isset($dedupResponse[$model_commonNamesCache->id])
-                && $dedupResponse[$model_commonNamesCache->id]['taxon_id'] == $model_scientificName->id ) {
+            if (isset($dedupResponse[$model_commonNamesCache->id]) && $dedupResponse[$model_commonNamesCache->id]['taxon_id'] == $model_scientificName->id) {
                 // just update references
-                if( is_array($result['references']) ) {
+                if (is_array($result['references'])) {
                     $dedupResponse[$model_commonNamesCache->id]['references'] = array_merge(
-                        $dedupResponse[$model_commonNamesCache->id]['references'],
-                        $result['references']
+                            $dedupResponse[$model_commonNamesCache->id]['references'], $result['references']
                     );
                 }
             }
@@ -165,12 +170,13 @@ abstract class SourceComponent extends CComponent {
                 );
             }
         }
-        
+
         // for compatibility reasons, add reference as concatenated string
-        foreach($dedupResponse as &$dedupResult) {
+        foreach ($dedupResponse as &$dedupResult) {
             $dedupResult['reference'] = join(';', $dedupResult['references']);
         }
-        
+
         return array_values($dedupResponse);
     }
+
 }
