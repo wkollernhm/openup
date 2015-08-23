@@ -57,6 +57,12 @@ class DyntaxaSe extends CachedSoapClient {
             'applicationIdentifier' => $this->applicationIdentifier,
             'isActivationRequired' => $this->isActivationRequired,
         ));
+        
+        // check if login was working
+        if( !is_object($WebLoginResponse) ) {
+            throw new Exception("Login to dyntaxa service failed.");
+        }
+        
         $WebLoginResponse = $WebLoginResponse->LoginResult;
         
         // construct internal webclient information object
