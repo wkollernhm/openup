@@ -153,5 +153,7 @@ return array(
             'port' => 4334,             // port of nameParser service
             'timeout' => 1,             // timeout in seconds
         ),
+        
+        'cliEdmSkosBaseUrl' => '',      // base url for EDM SKOS output Links on CLI (online requests use dynamic detection for base url)
     ),
 );
