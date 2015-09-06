@@ -24,6 +24,9 @@ class ArtsdatabankenNo extends CachedSoapClient {
 
         // Fetch records matching our query
         $records = $this->Artssok(array('Search' => $term));
+        if( !isset($records->ArtssokResult) ) {
+            return $response;
+        }
         $ArtssokResult = $records->ArtssokResult;
 
         // check for found response
