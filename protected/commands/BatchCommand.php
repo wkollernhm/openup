@@ -117,7 +117,7 @@ class BatchCommand extends CConsoleCommand {
                             ), true);
 
                     // create file name based on scientific name
-                    $scientificNameFileName = $outputFile . preg_replace('/[^a-zA-Z0-9\']/', '_', $scientificName) . ".xml";
+                    $scientificNameFileName = $outputFile . preg_replace('/[^a-zA-Z0-9]/', '_', $scientificName) . ".xml";
 
                     // now put them into a file named after the scientific name
                     file_put_contents($scientificNameFileName, $edmSkosResponse);
