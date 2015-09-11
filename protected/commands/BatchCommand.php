@@ -29,9 +29,10 @@ class BatchCommand extends CConsoleCommand {
      * @param String $outputFile Path to output file for processing results (CSV Format, one ScientificName / Common Name per Line)
      * @param String $outputFormat specify the output format, either 'csv' for a single csv export or 'edmSkos' for OpenUp specific EDM/SKOS output. In this case the outputFile parameter is not a single file but a directory
      * @param Boolean $bOnlyMatches [Optional] Return only 100% matches
+     * @param Boolean $bSkipExisting [Optional] Do not query for entries which already exist, only works for edmSkos output
      */
     public function actionCompare($scientificNamesFile, $outputFile,
-            $outputFormat = 'csv', $bOnlyMatches = false) {
+            $outputFormat = 'csv', $bOnlyMatches = false, $bSkipExisting = false) {
         if (!file_exists($scientificNamesFile)) {
             throw new Exception("Can't find file for scientific names '" . $scientificNamesFile . "'");
         }
@@ -63,10 +64,19 @@ class BatchCommand extends CConsoleCommand {
                 $scientificName = trim($scientificName);
                 if (empty($scientificName) || $scientificName == '.') {
                     echo "Skipping entry\n";
-                    
+
                     continue;
                 }
-                
+
+                // create file name based on scientific name
+                $scientificNameFileName = $outputFile . preg_replace('/[^a-zA-Z0-9]/', '_', $scientificName) . ".xml";
+                // if output format is edmSkos and skipping is active, check if file already exists
+                if ($outputFormat == BatchCommand::$OUTPUT_FORMAT_EDMSKOS && file_exists($scientificNameFileName)) {
+                    echo "Skipping '$scientificName' - file already exists ('$scientificNameFileName')\n";
+
+                    continue;
+                }
+
                 echo "Handling entry '$scientificName'\n";
 
                 // query sources for scientific name
@@ -115,9 +125,6 @@ class BatchCommand extends CConsoleCommand {
                         'entries' => $results,
                         'baseUrl' => Yii::app()->params['cliEdmSkosBaseUrl']
                             ), true);
-
-                    // create file name based on scientific name
-                    $scientificNameFileName = $outputFile . preg_replace('/[^a-zA-Z0-9]/', '_', $scientificName) . ".xml";
 
                     // now put them into a file named after the scientific name
                     file_put_contents($scientificNameFileName, $edmSkosResponse);

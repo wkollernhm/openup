@@ -2,13 +2,12 @@
 <rdf:RDF xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
     <?php
     if (!function_exists('xml_encode')) {
-
         /**
          * Small helper function for encoding all strings for use in XML
          * @param string $string String to encode
          */
         function xml_encode($string) {
-            return htmlspecialchars($string, ENT_XML1 | ENT_COMPAT, 'UTF-8');
+            return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
         }
 
     }
