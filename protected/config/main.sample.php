@@ -9,9 +9,9 @@ return array(
     'name' => 'OpenUp! Common Names Webservice',
     // preloading 'log' component
     'preload' => array(
-            'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'wboeOeaw', 'SlovakBratislava', 'LuomusFi', 'HebrewLinda', 'RussianPlantarium', 'ETIDatabases', 'LinnaeusProjects', 'DyntaxaSe', 'HungarianPeregovits', 'UkrainianKobiv', 'CzechJiri', 'TogoDb', 'Pland',
-            'log', 'NameParser', 'NHMWService'
-        ),
+        'PESI', 'NHMW', 'COL', 'CzechPrague', 'AllearterDk', 'ArtsdatabankenNo', 'NewZealandLandcare', 'wboeOeaw', 'SlovakBratislava', 'LuomusFi', 'HebrewLinda', 'RussianPlantarium', 'ETIDatabases', 'LinnaeusProjects', 'DyntaxaSe', 'HungarianPeregovits', 'UkrainianKobiv', 'CzechJiri', 'TogoDb', 'Pland', 'JacqNames',
+        'log', 'NameParser', 'NHMWService '
+    ),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
@@ -21,18 +21,18 @@ return array(
         'application.widgets.*',
     ),
     'modules' => array(
-        // uncomment the following to enable the Gii tool
-        /*'gii' => array(
-            'class' => 'system.gii.GiiModule',
-            'password' => 'gii',
-            // If removed, Gii defaults to localhost only. Edit carefully to taste.
-            'ipFilters' => array('192.168.56.1', '::1'),
-        ),*/
+// uncomment the following to enable the Gii tool
+    /* 'gii' => array(
+      'class' => 'system.gii.GiiModule',
+      'password' => 'gii',
+      // If removed, Gii defaults to localhost only. Edit carefully to taste.
+      'ipFilters' => array('192.168.56.1', '::1'),
+      ), */
     ),
     // application components
     'components' => array(
         'user' => array(
-            // enable cookie-based authentication
+// enable cookie-based authentication
             'allowAutoLogin' => true,
         ),
         // cache component
@@ -135,7 +135,9 @@ return array(
         'Pland' => array(
             'class' => 'Pland'
         ),
-
+        'JacqNames' => array(
+            'class' => 'JacqNames'
+        ),
         'NameParser' => array(
             'class' => 'NameParser'
         ),
@@ -144,16 +146,16 @@ return array(
         ),
     ),
     // application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
+// using Yii::app()->params['paramName']
     'params' => array(
         'adminEmail' => '',
         // GNA nameParser settings (run: "parserver -r -o json")
         'nameParser' => array(
-            'address' => '127.0.0.1',   // IP-address of nameParser service
-            'port' => 4334,             // port of nameParser service
-            'timeout' => 1,             // timeout in seconds
+            'address' => '127.0.0.1', // IP-address of nameParser service
+            'port' => 4334, // port of nameParser service
+            'timeout' => 1, // timeout in seconds
         ),
-        
-        'cliEdmSkosBaseUrl' => '',      // base url for EDM SKOS output Links on CLI (online requests use dynamic detection for base url)
+        'cliEdmSkosBaseUrl' => '', // base url for EDM SKOS output Links on CLI (online requests use dynamic detection for base url)
+        'jacqNamesBaseUrl' => ''    // base url for jacq-names service
     ),
 );
